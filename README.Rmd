@@ -1,0 +1,7 @@
+---
+title: "Project 1"
+author: "Brian Sugg"
+date: "6/12/2020"
+output: rmarkdown::github_document
+---
+
