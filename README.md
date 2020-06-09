@@ -45,7 +45,7 @@ blast"]}`
 This file can be received and unpackaged by a browser for parsing back
 into a consumable format, such as:
 
-![MoleculeMan](https://github.com/bsugg/Project1/blob/master/images/moleculeMan.png)
+![MoleculeMan](https://github.com/bsugg/Project1/blob/master/images/moleculeMan.PNG?raw=true)
 
 More information on JSON including its history and usage can be found in
 the [Wikipedia](https://en.wikipedia.org/wiki/JSON) community. The
