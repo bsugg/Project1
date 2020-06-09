@@ -32,7 +32,7 @@ JSON is commonly used when creating and consuming data via API connections. It c
 This file can be received and unpackaged by a browser for parsing back into a consumable format, such as:
 
 ```{r molecule.png, out.width="30%"}
-knitr::include_graphics("C:/Users/suggb/Documents/ST558/Projects/Project1/moleculeMan.png")
+knitr::include_graphics("moleculeMan.png")
 ```
 
 More information on JSON including its history and usage can be found in the [Wikipedia](https://en.wikipedia.org/wiki/JSON) community. The following sections will look further into how JSON files can be unpackaged and parsed into R, including an example connection to an API for the National Hockey League (NHL).  
