@@ -22,10 +22,36 @@ Brian Sugg
 
 ## Background
 
-Describe JSON data. What is it, where does it get used, and why is it a
-good way to store data? This should be detailed enough that someone that
-hasn’t seen JSON data would have a good idea what they are dealing with.
-Link to references where applicable.
+JSON stands for JavaScript Object Notation and is simply a method for
+writing out data objects using the JavaScript language for quick and
+efficient transmission between servers and browsers. JavaScript is a
+lightweight programming language with less syntax notation that makes it
+easy to read, write, and store data. The lightweight structure of JSON
+makes it a great way to quickly and efficiently send large amounts of
+data with minimal wait time and storage size.
+
+JSON is commonly used when creating and consuming data via API
+connections. It can ingest text strings, numbers, boolean values, `null`
+values, arrays, and objects into long strings of text that get delivered
+to a client for processing. An example from the [Mozilla
+Developers](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON)
+webpage helps illustrate how data describing a superhero, “Molecule
+Man”, would look in JavaScript format within a JSON file:
+
+`{"name":"Molecule Man","age": 29,"secretIdentity":"Dan
+Jukes","powers":["Radiation resistance","Turning tiny","Radiation
+blast"]}`
+
+This file can be received and unpackaged by a browser for parsing back
+into a consumable format, such as:
+
+<img src="C:/Users/suggb/Documents/ST558/Projects/Project1/moleculeMan.png" width="30%" />
+
+More information on JSON including its history and usage can be found in
+the [Wikipedia](https://en.wikipedia.org/wiki/JSON) community. The
+following sections will look further into how JSON files can be
+unpackaged and parsed into R, including an example connection to an API
+for the National Hockey League (NHL).
 
 ## Reading JSON DATA into R
 
