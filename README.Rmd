@@ -18,7 +18,7 @@ library(formatR)
 library(dplyr)
 library(httr)
 library(jsonlite)
-knitr::opts_chunk$set(echo=FALSE,message=FALSE,tidy.opts=list(width.cutoff=70),tidy=TRUE)
+knitr::opts_chunk$set(message=FALSE,tidy.opts=list(width.cutoff=70),tidy=TRUE)
 ```
 
 # Introduction to JSON Data  
@@ -71,13 +71,47 @@ Provide info on the NHL, available tables from records.nhl.com, which tables wil
 
 ## Establishing API Connection  
 
-Code chunk for the API and returning parse data from the selected tables.  
+Two functions below have been created for calling the NHL API. `nhlTable(tableName)` calls the provided endpoint from the user, parses, and returns a tibble of that endpoint. `nhlTableWithFranchiseId(tableName,franId)` calls the provided endpoint and the desired Franchise ID from the user, parses, and returns a tibble of that endpoint filtered on the respective franchise.  
+
+```{r nhlApiFunctions}
+nhlTable <- function(tableName){
+  baseURL <- "https://records.nhl.com/site/api"
+  # Get the URL and return the text to be parsed from JSON.
+  queryGET <- GET(paste0(baseURL,tableName))
+  queryText <- content(queryGET, "text")
+  queryJSON <- fromJSON(queryText, flatten = TRUE)
+  # Reformat data into a usable structure, a tibble.
+  queryList <- as.list(queryJSON) 
+  queryTbl <- as_tibble(queryList[[1]])
+}
+nhlTableWithFranchiseId <- function(tableName,FranId){
+  baseURL <- "https://records.nhl.com/site/api"
+  # Get the URL and return the text to be parsed from JSON.
+  queryGET <- GET(paste0(baseURL,tableName,"?cayenneExp=franchiseId=",FranId))
+  queryText <- content(queryGET, "text")
+  queryJSON <- fromJSON(queryText, flatten = TRUE)
+  # Reformat data into a usable structure, a tibble.
+  queryList <- as.list(queryJSON) 
+  queryTbl <- as_tibble(queryList[[1]])
+}
+# Example calls for 5 different endpoints, with 3 calling franchiseId=26 for the Carolina Hurricanes:
+fran <- nhlTable("/franchise")
+fran
+franTot <- nhlTable("/franchise-team-totals")
+franTot
+franSeason <- nhlTableWithFranchiseId("/franchise-season-records",26)
+franSeason
+franGoal <- nhlTableWithFranchiseId("/franchise-goalie-records",26)
+franGoal
+franSkate <- nhlTableWithFranchiseId("/franchise-skater-records",26)
+franSkate
+```
 
 ## Exploratory Data Analysis  
 
 ### The Data  
 
-Check for any needed formatting, create a new variable as required.  
+Check for any needed formatting, create a new variable as required (think teamName from franchise table).  
 
 ### Numeric Summaries  
 

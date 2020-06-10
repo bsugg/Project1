@@ -45,6 +45,10 @@ blast"]}`
 This file can be received and unpackaged by a browser for parsing back
 into a consumable format, such as:
 
+``` r
+knitr::include_graphics("images/moleculeMan.PNG")
+```
+
 <img src="images/moleculeMan.PNG" width="30%" />
 
 More information on JSON including its history and usage can be found in
@@ -85,14 +89,173 @@ tables will be explored using the selected function.
 
 ## Establishing API Connection
 
-Code chunk for the API and returning parse data from the selected
-tables.
+Two functions below have been created for calling the NHL API.
+`nhlTable(tableName)` calls the provided endpoint from the user, parses,
+and returns a tibble of that endpoint.
+`nhlTableWithFranchiseId(tableName,franId)` calls the provided endpoint
+and the desired Franchise ID from the user, parses, and returns a tibble
+of that endpoint filtered on the respective franchise.
+
+``` r
+nhlTable <- function(tableName) {
+    baseURL <- "https://records.nhl.com/site/api"
+    # Get the URL and return the text to be parsed from JSON.
+    queryGET <- GET(paste0(baseURL, tableName))
+    queryText <- content(queryGET, "text")
+    queryJSON <- fromJSON(queryText, flatten = TRUE)
+    # Reformat data into a usable structure, a tibble.
+    queryList <- as.list(queryJSON)
+    queryTbl <- as_tibble(queryList[[1]])
+}
+nhlTableWithFranchiseId <- function(tableName, FranId) {
+    baseURL <- "https://records.nhl.com/site/api"
+    # Get the URL and return the text to be parsed from JSON.
+    queryGET <- GET(paste0(baseURL, tableName, "?cayenneExp=franchiseId=", 
+        FranId))
+    queryText <- content(queryGET, "text")
+    queryJSON <- fromJSON(queryText, flatten = TRUE)
+    # Reformat data into a usable structure, a tibble.
+    queryList <- as.list(queryJSON)
+    queryTbl <- as_tibble(queryList[[1]])
+}
+# Example calls for 5 different endpoints, with 3 calling
+# franchiseId=26 for the Carolina Hurricanes:
+fran <- nhlTable("/franchise")
+fran
+```
+
+    ## # A tibble: 38 x 6
+    ##       id firstSeasonId lastSeasonId mostRecentTeamId teamCommonName
+    ##    <int>         <int>        <int>            <int> <chr>         
+    ##  1     1      19171918           NA                8 Canadiens     
+    ##  2     2      19171918     19171918               41 Wanderers     
+    ##  3     3      19171918     19341935               45 Eagles        
+    ##  4     4      19191920     19241925               37 Tigers        
+    ##  5     5      19171918           NA               10 Maple Leafs   
+    ##  6     6      19241925           NA                6 Bruins        
+    ##  7     7      19241925     19371938               43 Maroons       
+    ##  8     8      19251926     19411942               51 Americans     
+    ##  9     9      19251926     19301931               39 Quakers       
+    ## 10    10      19261927           NA                3 Rangers       
+    ## # ... with 28 more rows, and 1 more variable: teamPlaceName <chr>
+
+``` r
+franTot <- nhlTable("/franchise-team-totals")
+franTot
+```
+
+    ## # A tibble: 104 x 30
+    ##       id activeFranchise firstSeasonId franchiseId gameTypeId gamesPlayed
+    ##    <int>           <int>         <int>       <int>      <int>       <int>
+    ##  1     1               1      19821983          23          2        2937
+    ##  2     2               1      19821983          23          3         257
+    ##  3     3               1      19721973          22          2        3732
+    ##  4     4               1      19721973          22          3         272
+    ##  5     5               1      19261927          10          2        6504
+    ##  6     6               1      19261927          10          3         515
+    ##  7     7               1      19671968          16          3         433
+    ##  8     8               1      19671968          16          2        4115
+    ##  9     9               1      19671968          17          2        4115
+    ## 10    10               1      19671968          17          3         381
+    ## # ... with 94 more rows, and 24 more variables: goalsAgainst <int>,
+    ## #   goalsFor <int>, homeLosses <int>, homeOvertimeLosses <int>, homeTies <int>,
+    ## #   homeWins <int>, lastSeasonId <int>, losses <int>, overtimeLosses <int>,
+    ## #   penaltyMinutes <int>, pointPctg <dbl>, points <int>, roadLosses <int>,
+    ## #   roadOvertimeLosses <int>, roadTies <int>, roadWins <int>,
+    ## #   shootoutLosses <int>, shootoutWins <int>, shutouts <int>, teamId <int>,
+    ## #   teamName <chr>, ties <int>, triCode <chr>, wins <int>
+
+``` r
+franSeason <- nhlTableWithFranchiseId("/franchise-season-records", 26)
+franSeason
+```
+
+    ## # A tibble: 1 x 57
+    ##      id fewestGoals fewestGoalsAgai~ fewestGoalsAgai~ fewestGoalsSeas~
+    ##   <int>       <int>            <int> <chr>            <chr>           
+    ## 1    12         171              202 1998-99 (82)     2002-03 (82)    
+    ## # ... with 52 more variables: fewestLosses <int>, fewestLossesSeasons <chr>,
+    ## #   fewestPoints <int>, fewestPointsSeasons <chr>, fewestTies <int>,
+    ## #   fewestTiesSeasons <chr>, fewestWins <int>, fewestWinsSeasons <chr>,
+    ## #   franchiseId <int>, franchiseName <chr>, homeLossStreak <int>,
+    ## #   homeLossStreakDates <chr>, homePointStreak <int>,
+    ## #   homePointStreakDates <chr>, homeWinStreak <int>, homeWinStreakDates <chr>,
+    ## #   homeWinlessStreak <int>, homeWinlessStreakDates <chr>, lossStreak <int>,
+    ## #   lossStreakDates <chr>, mostGameGoals <int>, mostGameGoalsDates <chr>,
+    ## #   mostGoals <int>, mostGoalsAgainst <int>, mostGoalsAgainstSeasons <chr>,
+    ## #   mostGoalsSeasons <chr>, mostLosses <int>, mostLossesSeasons <chr>,
+    ## #   mostPenaltyMinutes <int>, mostPenaltyMinutesSeasons <chr>,
+    ## #   mostPoints <int>, mostPointsSeasons <chr>, mostShutouts <int>,
+    ## #   mostShutoutsSeasons <chr>, mostTies <int>, mostTiesSeasons <chr>,
+    ## #   mostWins <int>, mostWinsSeasons <chr>, pointStreak <int>,
+    ## #   pointStreakDates <chr>, roadLossStreak <int>, roadLossStreakDates <chr>,
+    ## #   roadPointStreak <int>, roadPointStreakDates <chr>, roadWinStreak <int>,
+    ## #   roadWinStreakDates <chr>, roadWinlessStreak <int>,
+    ## #   roadWinlessStreakDates <chr>, winStreak <int>, winStreakDates <chr>,
+    ## #   winlessStreak <lgl>, winlessStreakDates <lgl>
+
+``` r
+franGoal <- nhlTableWithFranchiseId("/franchise-goalie-records", 26)
+franGoal
+```
+
+    ## # A tibble: 38 x 29
+    ##       id activePlayer firstName franchiseId franchiseName gameTypeId gamesPlayed
+    ##    <int> <lgl>        <chr>           <int> <chr>              <int>       <int>
+    ##  1   277 FALSE        Cam                26 Carolina Hur~          2         668
+    ##  2   310 FALSE        Arturs             26 Carolina Hur~          2         309
+    ##  3   336 FALSE        Tom                26 Carolina Hur~          2          34
+    ##  4   363 FALSE        Richard            26 Carolina Hur~          2           6
+    ##  5   369 FALSE        Sean               26 Carolina Hur~          2         256
+    ##  6   411 FALSE        Mark               26 Carolina Hur~          2           3
+    ##  7   425 FALSE        John               26 Carolina Hur~          2         122
+    ##  8   430 FALSE        Mario              26 Carolina Hur~          2          23
+    ##  9   470 FALSE        Pat                26 Carolina Hur~          2           5
+    ## 10   490 FALSE        Mike               26 Carolina Hur~          2         252
+    ## # ... with 28 more rows, and 22 more variables: lastName <chr>, losses <int>,
+    ## #   mostGoalsAgainstDates <chr>, mostGoalsAgainstOneGame <int>,
+    ## #   mostSavesDates <chr>, mostSavesOneGame <int>, mostShotsAgainstDates <chr>,
+    ## #   mostShotsAgainstOneGame <int>, mostShutoutsOneSeason <int>,
+    ## #   mostShutoutsSeasonIds <chr>, mostWinsOneSeason <int>,
+    ## #   mostWinsSeasonIds <chr>, overtimeLosses <int>, playerId <int>,
+    ## #   positionCode <chr>, rookieGamesPlayed <int>, rookieShutouts <int>,
+    ## #   rookieWins <int>, seasons <int>, shutouts <int>, ties <int>, wins <int>
+
+``` r
+franSkate <- nhlTableWithFranchiseId("/franchise-skater-records", 26)
+franSkate
+```
+
+    ## # A tibble: 478 x 30
+    ##       id activePlayer assists firstName franchiseId franchiseName gameTypeId
+    ##    <int> <lgl>          <int> <chr>           <int> <chr>              <int>
+    ##  1 16900 FALSE            793 Ron                26 Carolina Hur~          2
+    ##  2 17018 FALSE            294 Kevin              26 Carolina Hur~          2
+    ##  3 17055 FALSE            158 Blaine             26 Carolina Hur~          2
+    ##  4 17090 FALSE            126 Mike               26 Carolina Hur~          2
+    ##  5 17111 FALSE             79 Torrie             26 Carolina Hur~          2
+    ##  6 17156 FALSE            211 Pat                26 Carolina Hur~          2
+    ##  7 17170 FALSE            147 Mark               26 Carolina Hur~          2
+    ##  8 17237 FALSE             11 Thommy             26 Carolina Hur~          2
+    ##  9 17239 FALSE              0 Jim                26 Carolina Hur~          2
+    ## 10 17257 FALSE             13 Greg               26 Carolina Hur~          2
+    ## # ... with 468 more rows, and 23 more variables: gamesPlayed <int>,
+    ## #   goals <int>, lastName <chr>, mostAssistsGameDates <chr>,
+    ## #   mostAssistsOneGame <int>, mostAssistsOneSeason <int>,
+    ## #   mostAssistsSeasonIds <chr>, mostGoalsGameDates <chr>,
+    ## #   mostGoalsOneGame <int>, mostGoalsOneSeason <int>, mostGoalsSeasonIds <chr>,
+    ## #   mostPenaltyMinutesOneSeason <int>, mostPenaltyMinutesSeasonIds <chr>,
+    ## #   mostPointsGameDates <chr>, mostPointsOneGame <int>,
+    ## #   mostPointsOneSeason <int>, mostPointsSeasonIds <chr>, penaltyMinutes <int>,
+    ## #   playerId <int>, points <int>, positionCode <chr>, rookiePoints <int>,
+    ## #   seasons <int>
 
 ## Exploratory Data Analysis
 
 ### The Data
 
-Check for any needed formatting, create a new variable as required.
+Check for any needed formatting, create a new variable as required
+(think teamName from franchise table).
 
 ### Numeric Summaries
 
