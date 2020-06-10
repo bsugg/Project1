@@ -86,9 +86,9 @@ Overall, `jsonlite` is a fast JSON parser and useful for the conversion of JSON 
 
 ## Package for this Vignette  
 
-`jsonlite` coupled with `httr`.  
+Given its optimization for parsing JSON script from APIs, the `jsonlite` package is used in this vignette when communicating with the API for NHL records. Its fast speed and ease of use when coupled with the `httr` package makes it a preferred candidate for converting JSON into R objects.  
 
-Name which package will be used in the upcoming API call to NHL records, and why.  
+In the following "NHL Franchise API" section, the `GET()` and `content()` functions from `httr` will be used to call a URL and return a JSON text string. The `fromJSON()` function from `jsonlite` will then be utilized for parsing the raw text into a R list object. Finally, the data table from the R list object will be pulled and converted into a tibble for data analysis.   
 
 # NHL Franchise API  
 
