@@ -6,9 +6,9 @@ Brian Sugg
   - [Introduction to JSON Data](#introduction-to-json-data)
       - [Background](#background)
       - [Reading JSON DATA into R](#reading-json-data-into-r)
-          - [Package 1](#package-1)
-          - [Package 2](#package-2)
-          - [Package 3](#package-3)
+          - [Package 1 - rjson:](#package-1---rjson)
+          - [Package 2 - RJSONIO:](#package-2---rjsonio)
+          - [Package 3 - jsonlite:](#package-3---jsonlite)
       - [Package for this Vignette](#package-for-this-vignette)
   - [NHL Franchise API](#nhl-franchise-api)
       - [Background](#background-1)
@@ -45,10 +45,6 @@ blast"]}`
 This file can be received and unpackaged by a browser for parsing back
 into a consumable format, such as:
 
-``` r
-knitr::include_graphics("images/moleculeMan.PNG")
-```
-
 <img src="images/moleculeMan.PNG" width="30%" />
 
 More information on JSON including its history and usage can be found in
@@ -59,23 +55,88 @@ for the National Hockey League (NHL).
 
 ## Reading JSON DATA into R
 
-Discuss the possible packages/functions that are available for reading
-JSON data into R.  
-rjson & rjsonio jsonlite & httr tidyjson & dplyr Pick 3.
+There are several packages available for reading JSON data into R. Some
+of these packages, such as `rjson`, have been around for a few years
+providing functionality as a predecessor for future packages to improve
+upon. Three major packages will be discussed further below with links to
+their respective documentation in the Comprehensive R Archive Network
+(CRAN). They include:
 
-### Package 1
+  - `rjson`  
+  - `RJSONIO`  
+  - `jsonlite`
 
-Details on available package 1 (to be named).
+In the spirit of open source development, the evolution of other
+packages for converting between JSON and R still continues today. This
+is evident in the recent release version of the
+[`tidyjson`](https://cran.r-project.org/package=tidyjson) package on
+31-May-2020.
 
-### Package 2
+### Package 1 - rjson:
 
-Details on available package 2 (to be named).
+The `rjson` package was an early effort in converting data between JSON
+and R. Its two primary functions are:
 
-### Package 3
+  - `toJSON()` for converting R objects to JSON format  
+  - `fromJSON()` for converting from JSON format into R objects
 
-Details on available package 1 (to be named).
+In early release versions, `rjson` was reportedly too slow for
+converting large R objects into JSON format. The need for a faster
+conversion would eventually lead to the creation of the `RJSONIO`
+package.
+
+*[Link](https://cran.r-project.org/package=rjson) to CRAN documentation
+for a more exhaustive list of `rjson` functions and their arguments.*
+
+### Package 2 - RJSONIO:
+
+Building upon the functionality of `rjson`, the `RJSONIO` package offers
+faster conversions and additional functions for troubleshooting the
+parsing process. Both `fromJSON()` and `toJSON()` are enhanced and still
+available, and new functions introduced, such as:
+
+  - `isValidJSON()` for validating JSON format prior to parsing, which
+    helps when troublehsooting errors  
+  - `readJSONStream()` that optimizes system memory and processing for
+    the ingestion of streaming JSON content
+
+Overall, `RJSONIO` has additional options for the generation and
+processing of JSON content, while sharing a similar look and feel of
+`rjson`.
+
+*[Link](https://cran.r-project.org/package=RJSONIO) to CRAN
+documentation for a more exhaustive list of `RJSONIO` functions and
+their arguments.*
+
+### Package 3 - jsonlite:
+
+Originally a fork of the `RJSONIO` package, the `jsonlite` package is
+one of the newer options available for parsing JSON data in R. It has
+been designed and optimized for interaction with web APIs. The core
+functions of `fromJSON()` and `toJSON()` remain, however, they have been
+rewritten for better consistency when converting between JSON and R.
+Other functions for `jsonlite` include:
+
+  - `validate()` for validating the structure of JSON content (similar
+    to `isValidJSON()` in `RJSONIO`)  
+  - `prettify()` adds indentation to JSON strings for better
+    readability  
+  - `minify()` for removing all indendation and whitespace  
+  - `stream_in()` and `stream_out()` for handling streaming JSON
+    connections
+
+Overall, `jsonlite` is a fast JSON parser and useful for the conversion
+of JSON script into nested lists in R. Given its speed and high
+performance, `jsonlite` is a powerful package for anyone interested in
+JSON to R conversions, particularly when APIs are involved.
+
+*[Link](https://cran.r-project.org/package=jsonlite) to CRAN
+documentation for a more exhaustive list of `jsonlite` functions and
+their arguments.*
 
 ## Package for this Vignette
+
+`jsonlite` coupled with `httr`.
 
 Name which package will be used in the upcoming API call to NHL records,
 and why.
@@ -143,12 +204,12 @@ nhlTable <- function(tableName) {
     queryList <- as.list(queryJSON)
     queryTbl <- as_tibble(queryList[[1]])
 }
-nhlTableWithFranchiseId <- function(tableName, FranId) {
+nhlTableWithFranchiseId <- function(tableName, franId) {
     baseURL <- "https://records.nhl.com/site/api"
     # GET() used to retrieve information in raw form, content() transforms
     # raw into JSON text for conversion with fromJSON().
     queryGET <- GET(paste0(baseURL, tableName, "?cayenneExp=franchiseId=", 
-        FranId))
+        franId))
     queryText <- content(queryGET, "text")
     queryJSON <- fromJSON(queryText, flatten = TRUE)
     # Reformat data from the returned list into a usable structure, a
@@ -157,7 +218,7 @@ nhlTableWithFranchiseId <- function(tableName, FranId) {
     queryTbl <- as_tibble(queryList[[1]])
 }
 # Function calls for 5 different endpoints, with 3 calling
-# franchiseId=26 for the Carolina Hurricanes:
+# franchiseId=26 for data specific to the Carolina Hurricanes:
 fran <- nhlTable("/franchise")
 fran
 ```
