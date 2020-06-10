@@ -57,7 +57,7 @@ for the National Hockey League (NHL).
 
 Discuss the possible packages/functions that are available for reading
 JSON data into R.  
-rjson & rjsonio jsonlite & httr tidyjson & dplyr
+rjson & rjsonio jsonlite & httr tidyjson & dplyr Pick 3.
 
 ### Package 1
 

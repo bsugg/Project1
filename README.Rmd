@@ -45,6 +45,7 @@ Discuss the possible packages/functions that are available for reading JSON data
 rjson & rjsonio
 jsonlite & httr
 tidyjson & dplyr
+Pick 3.
 
 ### Package 1  
 
