@@ -67,34 +67,54 @@ Name which package will be used in the upcoming API call to NHL records, and why
 
 ## Background  
 
-Provide info on the NHL, available tables from records.nhl.com, which tables will be explored using the selected function.  
+The professional hockey leaague across the United States and Canada is the  National Hockey League (NHL), which provides an API for public consumption. The NHL offers almost no official documentation for this connection and its available endpoints. To help navigate this API, open source documentation from this [GitLab](https://gitlab.com/dword4/nhlapi/-/blob/master/records-api.md) will be used to understand what data is available, relevant URL addresses, and how to filter on certain attributes in the API query.  
+
+The following sections will focus primarily on retrieving data for NHL franchises, players (goalies and skaters), and season stats. Some numerical summaries will be presented, along with the exploration of analytical summaries containing visuals of various plots.  
 
 ## Establishing API Connection  
 
-Two functions below have been created for calling the NHL API. `nhlTable(tableName)` calls the provided endpoint from the user, parses, and returns a tibble of that endpoint. `nhlTableWithFranchiseId(tableName,franId)` calls the provided endpoint and the desired Franchise ID from the user, parses, and returns a tibble of that endpoint filtered on the respective franchise.  
+The base URL for the NHL API is `https://records.nhl.com/site/api` which can be called with different extensions such as `/franchise` to retrieve data from a specific endpoint, or additionally with a Franchise ID such as `26` (Carolina Hurricanes) to return data filtered on specific franchises.  
+
+Two functions below have been created for calling the NHL API:  
+
+* `nhlTable(tableName)` calls the provided endpoint from the user, parses, and returns a tibble of that endpoint.  
+* `nhlTableWithFranchiseId(tableName,franId)` calls the provided endpoint and the desired Franchise ID from the user, parses, and returns a tibble of that endpoint filtered on the respective franchise.  
+
+These functions will be used to call the following endpoints, creating tibbles for each:  
+
+* `/franchise` to create table `fran`  
+* `/franchise-team-totals` to create table `franTot`  
+* `/franchise-season-records` to create table `franSeason`  
+    + Filtered on Franchise ID `26` for the Carolina Hurricanes  
+* `/franchise-goalie-records` to create table `franGoal`  
+    + Filtered on Franchise ID `26` for the Carolina Hurricanes  
+* `/franchise-skater-records` to create table `franSkate`  
+    + Filtered on Franchise ID `26` for the Carolina Hurricanes  
+
+These tables will be used in the upcoming section on "Exploratory Data Analysis".  
 
 ```{r nhlApiFunctions}
 nhlTable <- function(tableName){
   baseURL <- "https://records.nhl.com/site/api"
-  # Get the URL and return the text to be parsed from JSON.
+  # GET() used to retrieve information in raw form, content() transforms raw into JSON text for conversion with fromJSON().  
   queryGET <- GET(paste0(baseURL,tableName))
   queryText <- content(queryGET, "text")
   queryJSON <- fromJSON(queryText, flatten = TRUE)
-  # Reformat data into a usable structure, a tibble.
+  # Reformat data from the returned list into a usable structure, a tibble.  
   queryList <- as.list(queryJSON) 
   queryTbl <- as_tibble(queryList[[1]])
 }
 nhlTableWithFranchiseId <- function(tableName,FranId){
   baseURL <- "https://records.nhl.com/site/api"
-  # Get the URL and return the text to be parsed from JSON.
+  # GET() used to retrieve information in raw form, content() transforms raw into JSON text for conversion with fromJSON().  
   queryGET <- GET(paste0(baseURL,tableName,"?cayenneExp=franchiseId=",FranId))
   queryText <- content(queryGET, "text")
   queryJSON <- fromJSON(queryText, flatten = TRUE)
-  # Reformat data into a usable structure, a tibble.
+  # Reformat data from the returned list into a usable structure, a tibble.  
   queryList <- as.list(queryJSON) 
   queryTbl <- as_tibble(queryList[[1]])
 }
-# Example calls for 5 different endpoints, with 3 calling franchiseId=26 for the Carolina Hurricanes:
+# Function calls for 5 different endpoints, with 3 calling franchiseId=26 for the Carolina Hurricanes:
 fran <- nhlTable("/franchise")
 fran
 franTot <- nhlTable("/franchise-team-totals")
