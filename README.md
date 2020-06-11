@@ -361,8 +361,70 @@ franSkate
 
 ### The Data
 
-Check for any needed formatting, create a new variable as required
-(think teamName from franchise table).
+Two tables from the API query will be modfied and examined further. The
+table `fran` with franchise data has been formatted with two additional
+variables, some variables have been renamed for better understanding,
+columns selected in the order of desired appearance, and the overall
+table arranged by `teamName`.
+
+The table `franSkate` with player skater data for the Carolina
+Hurricanes has been formatted with one additional variable, another
+categorical variable now has replaced values for better understanding of
+player position, columns selected in the order of desired appearance,
+and the overall table arranged by `gamesPlayed`.
+
+``` r
+# Format 'fran' table and create modified version. Add 2 new variables,
+# 'teamName' and 'activeTeam'. Rename variables as needed. Select
+# relevant varibales and arrange by 'teamName'.
+franMod <- fran %>% mutate(teamName = paste(fran$teamPlaceName, fran$teamCommonName)) %>% 
+    mutate(activeTeam = as.integer(is.na(lastSeasonId))) %>% rename(franchiseId = "id", 
+    teamId = "mostRecentTeamId") %>% select(teamName, franchiseId, teamId, 
+    firstSeasonId, lastSeasonId, activeTeam) %>% arrange(teamName)
+# Format 'franSkate' table and create modified version. Add 1 new
+# variable, 'playerName' and arrange by gamesPlayed. Replace levels of
+# categorical variable 'positionCode' with full position name. Select
+# relevant varibales in desired order.
+franSkateMod <- franSkate %>% mutate(playerName = paste(franSkate$firstName, 
+    franSkate$lastName)) %>% arrange(desc(gamesPlayed))
+franSkateMod$positionCode <- factor(franSkateMod$positionCode, c("C", "D", 
+    "L", "R"), labels = c("Center", "Defenseman", "Left Wing", "Right Wing"))
+franSkateMod <- franSkateMod %>% rename(position = "positionCode") %>% 
+    select(playerName, playerId, activePlayer, position, seasons, gamesPlayed, 
+        points, goals, assists, penaltyMinutes, mostPointsOneSeason, mostPointsOneGame, 
+        mostGoalsOneSeason, mostGoalsOneGame, mostAssistsOneSeason, mostAssistsOneGame, 
+        mostPenaltyMinutesOneSeason)
+```
+
+| teamName            | franchiseId | teamId | firstSeasonId | lastSeasonId | activeTeam |
+| :------------------ | ----------: | -----: | ------------: | -----------: | ---------: |
+| Anaheim Ducks       |          32 |     24 |      19931994 |           NA |          1 |
+| Arizona Coyotes     |          28 |     53 |      19791980 |           NA |          1 |
+| Boston Bruins       |           6 |      6 |      19241925 |           NA |          1 |
+| Brooklyn Americans  |           8 |     51 |      19251926 |     19411942 |          0 |
+| Buffalo Sabres      |          19 |      7 |      19701971 |           NA |          1 |
+| Calgary Flames      |          21 |     20 |      19721973 |           NA |          1 |
+| Carolina Hurricanes |          26 |     12 |      19791980 |           NA |          1 |
+| Chicago Blackhawks  |          11 |     16 |      19261927 |           NA |          1 |
+| Cleveland Barons    |          13 |     49 |      19671968 |     19771978 |          0 |
+| Colorado Avalanche  |          27 |     21 |      19791980 |           NA |          1 |
+
+Preview of modified Franchise Data
+
+| playerName      | playerId | activePlayer | position   | seasons | gamesPlayed | points | goals | assists | penaltyMinutes | mostPointsOneSeason | mostPointsOneGame | mostGoalsOneSeason | mostGoalsOneGame | mostAssistsOneSeason | mostAssistsOneGame | mostPenaltyMinutesOneSeason |
+| :-------------- | -------: | :----------- | :--------- | ------: | ----------: | -----: | ----: | ------: | -------------: | ------------------: | ----------------: | -----------------: | ---------------: | -------------------: | -----------------: | --------------------------: |
+| Ron Francis     |  8446951 | FALSE        | Center     |      16 |        1186 |   1175 |   382 |     793 |            682 |                 101 |                 6 |                 32 |                4 |                   69 |                  6 |                          87 |
+| Glen Wesley     |  8452371 | FALSE        | Defenseman |      13 |         913 |    227 |    51 |     176 |            620 |                  32 |                 3 |                  8 |                2 |                   26 |                  3 |                          88 |
+| Eric Staal      |  8470595 | TRUE         | Center     |      12 |         909 |    775 |   322 |     453 |            678 |                 100 |                 6 |                 45 |                4 |                   55 |                  4 |                          81 |
+| Kevin Dineen    |  8446423 | FALSE        | Right Wing |      12 |         708 |    544 |   250 |     294 |           1439 |                  89 |                 5 |                 45 |                3 |                   44 |                  4 |                         217 |
+| Rod Brind’Amour |  8445735 | FALSE        | Center     |      10 |         694 |    473 |   174 |     299 |            398 |                  82 |                 5 |                 31 |                3 |                   56 |                  4 |                          68 |
+| Jeff O’Neill    |  8460495 | FALSE        | Center     |       9 |         673 |    416 |   198 |     218 |            552 |                  67 |                 4 |                 41 |                3 |                   38 |                  3 |                         106 |
+| Adam Burt       |  8445783 | FALSE        | Defenseman |      11 |         626 |    142 |    36 |     106 |            875 |                  24 |                 3 |                  9 |                2 |                   17 |                  2 |                         121 |
+| Jeff Skinner    |  8475784 | TRUE         | Left Wing  |       8 |         579 |    379 |   204 |     175 |            268 |                  63 |                 3 |                 37 |                3 |                   32 |                  3 |                          56 |
+| Justin Faulk    |  8475753 | TRUE         | Defenseman |       8 |         559 |    258 |    85 |     173 |            265 |                  49 |                 3 |                 17 |                3 |                   34 |                  3 |                          48 |
+| Erik Cole       |  8467396 | FALSE        | Left Wing  |       9 |         557 |    363 |   168 |     195 |            494 |                  61 |                 4 |                 30 |                3 |                   32 |                  4 |                          93 |
+
+Preview of modified Skater Data
 
 ### Numeric Summaries
 

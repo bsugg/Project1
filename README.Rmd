@@ -18,6 +18,8 @@ library(formatR)
 library(dplyr)
 library(httr)
 library(jsonlite)
+library(DT)
+library(ggplot2)
 knitr::opts_chunk$set(message=FALSE,tidy.opts=list(width.cutoff=70),tidy=TRUE)
 ```
 
@@ -158,7 +160,23 @@ franSkate
 
 ### The Data  
 
-Check for any needed formatting, create a new variable as required (think teamName from franchise table).  
+Two tables from the API query will be modfied and examined further. The table `fran` with franchise data has been formatted with two additional variables, some variables have been renamed for better understanding, columns selected in the order of desired appearance, and the overall table arranged by `teamName`.  
+
+The table `franSkate` with player skater data for the Carolina Hurricanes has been formatted with one additional variable, another categorical variable now has replaced values for better understanding of player position,  columns selected in the order of desired appearance, and the overall table arranged by `gamesPlayed`.  
+
+```{r tableFormat}
+# Format "fran" table and create modified version. Add 2 new variables, "teamName" and "activeTeam". Rename variables as needed. Select relevant varibales and arrange by "teamName".
+franMod <- fran %>% mutate(teamName=paste(fran$teamPlaceName,fran$teamCommonName)) %>% mutate(activeTeam=as.integer(is.na(lastSeasonId))) %>%  rename("franchiseId"="id","teamId"="mostRecentTeamId") %>% select(teamName,franchiseId,teamId,firstSeasonId,lastSeasonId,activeTeam) %>% arrange(teamName)
+# Format "franSkate" table and create modified version. Add 1 new variable, "playerName" and arrange by gamesPlayed. Replace levels of categorical variable "positionCode" with full position name. Select relevant varibales in desired order.
+franSkateMod <- franSkate %>% mutate(playerName=paste(franSkate$firstName,franSkate$lastName)) %>% arrange(desc(gamesPlayed))
+franSkateMod$positionCode <- factor(franSkateMod$positionCode,c("C","D","L","R"),labels = c("Center","Defenseman","Left Wing","Right Wing"))
+franSkateMod <- franSkateMod %>% rename("position"="positionCode") %>% select(playerName, playerId, activePlayer, position, seasons, gamesPlayed, points, goals, assists, penaltyMinutes, mostPointsOneSeason, mostPointsOneGame, mostGoalsOneSeason, mostGoalsOneGame, mostAssistsOneSeason, mostAssistsOneGame, mostPenaltyMinutesOneSeason)
+```
+
+```{r showTables, echo=FALSE}
+knitr::kable(head(franMod,n=10),caption="Preview of modified Franchise Data")
+knitr::kable(head(franSkateMod,n=10),caption="Preview of modified Skater Data")
+```
 
 ### Numeric Summaries  
 
