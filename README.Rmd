@@ -6,9 +6,6 @@ output:
   rmarkdown::github_document:
     toc: true
     toc_depth: 3
-  html_document:
-    toc: true
-    toc_depth: 3
 ---
 
 ```{r setupOptions, include=FALSE}
@@ -20,6 +17,7 @@ library(httr)
 library(jsonlite)
 library(DT)
 library(ggplot2)
+library(knitr)
 knitr::opts_chunk$set(message=FALSE,tidy.opts=list(width.cutoff=70),tidy=TRUE)
 ```
 
@@ -174,8 +172,9 @@ franSkateMod <- franSkateMod %>% rename("position"="positionCode") %>% filter(ga
 ```
 
 ```{r showTables, echo=FALSE}
-knitr::kable(head(franMod,n=10),caption="Preview of modified Franchise Data")
-knitr::kable(head(franSkateMod,n=10),caption="Preview of modified Skater Data")
+knitr::kable(table(franSkateMod$position),format="html",caption="Frequency of Position",col.names = c("Position","Frequency"))
+knitr::kable(head(franMod,n=10),format="html",caption="Preview of modified Franchise Data")
+knitr::kable(head(franSkateMod,n=10),format="html",caption="Preview of modified Skater Data")
 ```
 
 ### Numeric Summaries  

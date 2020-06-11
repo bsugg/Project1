@@ -400,35 +400,1613 @@ franSkateMod <- franSkateMod %>% rename(position = "positionCode") %>%
     avgGamesPlayedPerSeason)
 ```
 
-| teamName            | franchiseId | teamId | firstSeasonId | lastSeasonId | activeTeam |
-| :------------------ | ----------: | -----: | ------------: | -----------: | ---------: |
-| Anaheim Ducks       |          32 |     24 |      19931994 |           NA |          1 |
-| Arizona Coyotes     |          28 |     53 |      19791980 |           NA |          1 |
-| Boston Bruins       |           6 |      6 |      19241925 |           NA |          1 |
-| Brooklyn Americans  |           8 |     51 |      19251926 |     19411942 |          0 |
-| Buffalo Sabres      |          19 |      7 |      19701971 |           NA |          1 |
-| Calgary Flames      |          21 |     20 |      19721973 |           NA |          1 |
-| Carolina Hurricanes |          26 |     12 |      19791980 |           NA |          1 |
-| Chicago Blackhawks  |          11 |     16 |      19261927 |           NA |          1 |
-| Cleveland Barons    |          13 |     49 |      19671968 |     19771978 |          0 |
-| Colorado Avalanche  |          27 |     21 |      19791980 |           NA |          1 |
+<table>
+
+<caption>
+
+Frequency of Position
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Position
+
+</th>
+
+<th style="text-align:right;">
+
+Frequency
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Center
+
+</td>
+
+<td style="text-align:right;">
+
+91
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Defenseman
+
+</td>
+
+<td style="text-align:right;">
+
+133
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Left Wing
+
+</td>
+
+<td style="text-align:right;">
+
+91
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Right Wing
+
+</td>
+
+<td style="text-align:right;">
+
+81
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<table>
+
+<caption>
 
 Preview of modified Franchise Data
 
-| playerName      | playerId | activePlayer | position   | seasons | gamesPlayed | points | goals | assists | penaltyMinutes | avgPointsPerSeason | avgGoalsPerSeason | avgAssistsPerSeason | avgPenaltyMinutesPerSeason | avgGamesPlayedPerSeason |
-| :-------------- | -------: | :----------- | :--------- | ------: | ----------: | -----: | ----: | ------: | -------------: | -----------------: | ----------------: | ------------------: | -------------------------: | ----------------------: |
-| Ron Francis     |  8446951 | FALSE        | Center     |      16 |        1186 |   1175 |   382 |     793 |            682 |               73.4 |              23.9 |                49.6 |                       42.6 |                    74.1 |
-| Glen Wesley     |  8452371 | FALSE        | Defenseman |      13 |         913 |    227 |    51 |     176 |            620 |               17.5 |               3.9 |                13.5 |                       47.7 |                    70.2 |
-| Eric Staal      |  8470595 | TRUE         | Center     |      12 |         909 |    775 |   322 |     453 |            678 |               64.6 |              26.8 |                37.8 |                       56.5 |                    75.8 |
-| Kevin Dineen    |  8446423 | FALSE        | Right Wing |      12 |         708 |    544 |   250 |     294 |           1439 |               45.3 |              20.8 |                24.5 |                      119.9 |                    59.0 |
-| Rod Brind’Amour |  8445735 | FALSE        | Center     |      10 |         694 |    473 |   174 |     299 |            398 |               47.3 |              17.4 |                29.9 |                       39.8 |                    69.4 |
-| Jeff O’Neill    |  8460495 | FALSE        | Center     |       9 |         673 |    416 |   198 |     218 |            552 |               46.2 |              22.0 |                24.2 |                       61.3 |                    74.8 |
-| Adam Burt       |  8445783 | FALSE        | Defenseman |      11 |         626 |    142 |    36 |     106 |            875 |               12.9 |               3.3 |                 9.6 |                       79.5 |                    56.9 |
-| Jeff Skinner    |  8475784 | TRUE         | Left Wing  |       8 |         579 |    379 |   204 |     175 |            268 |               47.4 |              25.5 |                21.9 |                       33.5 |                    72.4 |
-| Justin Faulk    |  8475753 | TRUE         | Defenseman |       8 |         559 |    258 |    85 |     173 |            265 |               32.2 |              10.6 |                21.6 |                       33.1 |                    69.9 |
-| Erik Cole       |  8467396 | FALSE        | Left Wing  |       9 |         557 |    363 |   168 |     195 |            494 |               40.3 |              18.7 |                21.7 |                       54.9 |                    61.9 |
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+teamName
+
+</th>
+
+<th style="text-align:right;">
+
+franchiseId
+
+</th>
+
+<th style="text-align:right;">
+
+teamId
+
+</th>
+
+<th style="text-align:right;">
+
+firstSeasonId
+
+</th>
+
+<th style="text-align:right;">
+
+lastSeasonId
+
+</th>
+
+<th style="text-align:right;">
+
+activeTeam
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Anaheim Ducks
+
+</td>
+
+<td style="text-align:right;">
+
+32
+
+</td>
+
+<td style="text-align:right;">
+
+24
+
+</td>
+
+<td style="text-align:right;">
+
+19931994
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Arizona Coyotes
+
+</td>
+
+<td style="text-align:right;">
+
+28
+
+</td>
+
+<td style="text-align:right;">
+
+53
+
+</td>
+
+<td style="text-align:right;">
+
+19791980
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Boston Bruins
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+<td style="text-align:right;">
+
+19241925
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Brooklyn Americans
+
+</td>
+
+<td style="text-align:right;">
+
+8
+
+</td>
+
+<td style="text-align:right;">
+
+51
+
+</td>
+
+<td style="text-align:right;">
+
+19251926
+
+</td>
+
+<td style="text-align:right;">
+
+19411942
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Buffalo Sabres
+
+</td>
+
+<td style="text-align:right;">
+
+19
+
+</td>
+
+<td style="text-align:right;">
+
+7
+
+</td>
+
+<td style="text-align:right;">
+
+19701971
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Calgary Flames
+
+</td>
+
+<td style="text-align:right;">
+
+21
+
+</td>
+
+<td style="text-align:right;">
+
+20
+
+</td>
+
+<td style="text-align:right;">
+
+19721973
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Carolina Hurricanes
+
+</td>
+
+<td style="text-align:right;">
+
+26
+
+</td>
+
+<td style="text-align:right;">
+
+12
+
+</td>
+
+<td style="text-align:right;">
+
+19791980
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Chicago Blackhawks
+
+</td>
+
+<td style="text-align:right;">
+
+11
+
+</td>
+
+<td style="text-align:right;">
+
+16
+
+</td>
+
+<td style="text-align:right;">
+
+19261927
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Cleveland Barons
+
+</td>
+
+<td style="text-align:right;">
+
+13
+
+</td>
+
+<td style="text-align:right;">
+
+49
+
+</td>
+
+<td style="text-align:right;">
+
+19671968
+
+</td>
+
+<td style="text-align:right;">
+
+19771978
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Colorado Avalanche
+
+</td>
+
+<td style="text-align:right;">
+
+27
+
+</td>
+
+<td style="text-align:right;">
+
+21
+
+</td>
+
+<td style="text-align:right;">
+
+19791980
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<table>
+
+<caption>
 
 Preview of modified Skater Data
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+playerName
+
+</th>
+
+<th style="text-align:right;">
+
+playerId
+
+</th>
+
+<th style="text-align:left;">
+
+activePlayer
+
+</th>
+
+<th style="text-align:left;">
+
+position
+
+</th>
+
+<th style="text-align:right;">
+
+seasons
+
+</th>
+
+<th style="text-align:right;">
+
+gamesPlayed
+
+</th>
+
+<th style="text-align:right;">
+
+points
+
+</th>
+
+<th style="text-align:right;">
+
+goals
+
+</th>
+
+<th style="text-align:right;">
+
+assists
+
+</th>
+
+<th style="text-align:right;">
+
+penaltyMinutes
+
+</th>
+
+<th style="text-align:right;">
+
+avgPointsPerSeason
+
+</th>
+
+<th style="text-align:right;">
+
+avgGoalsPerSeason
+
+</th>
+
+<th style="text-align:right;">
+
+avgAssistsPerSeason
+
+</th>
+
+<th style="text-align:right;">
+
+avgPenaltyMinutesPerSeason
+
+</th>
+
+<th style="text-align:right;">
+
+avgGamesPlayedPerSeason
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Ron Francis
+
+</td>
+
+<td style="text-align:right;">
+
+8446951
+
+</td>
+
+<td style="text-align:left;">
+
+FALSE
+
+</td>
+
+<td style="text-align:left;">
+
+Center
+
+</td>
+
+<td style="text-align:right;">
+
+16
+
+</td>
+
+<td style="text-align:right;">
+
+1186
+
+</td>
+
+<td style="text-align:right;">
+
+1175
+
+</td>
+
+<td style="text-align:right;">
+
+382
+
+</td>
+
+<td style="text-align:right;">
+
+793
+
+</td>
+
+<td style="text-align:right;">
+
+682
+
+</td>
+
+<td style="text-align:right;">
+
+73.4
+
+</td>
+
+<td style="text-align:right;">
+
+23.9
+
+</td>
+
+<td style="text-align:right;">
+
+49.6
+
+</td>
+
+<td style="text-align:right;">
+
+42.6
+
+</td>
+
+<td style="text-align:right;">
+
+74.1
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Glen Wesley
+
+</td>
+
+<td style="text-align:right;">
+
+8452371
+
+</td>
+
+<td style="text-align:left;">
+
+FALSE
+
+</td>
+
+<td style="text-align:left;">
+
+Defenseman
+
+</td>
+
+<td style="text-align:right;">
+
+13
+
+</td>
+
+<td style="text-align:right;">
+
+913
+
+</td>
+
+<td style="text-align:right;">
+
+227
+
+</td>
+
+<td style="text-align:right;">
+
+51
+
+</td>
+
+<td style="text-align:right;">
+
+176
+
+</td>
+
+<td style="text-align:right;">
+
+620
+
+</td>
+
+<td style="text-align:right;">
+
+17.5
+
+</td>
+
+<td style="text-align:right;">
+
+3.9
+
+</td>
+
+<td style="text-align:right;">
+
+13.5
+
+</td>
+
+<td style="text-align:right;">
+
+47.7
+
+</td>
+
+<td style="text-align:right;">
+
+70.2
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Eric Staal
+
+</td>
+
+<td style="text-align:right;">
+
+8470595
+
+</td>
+
+<td style="text-align:left;">
+
+TRUE
+
+</td>
+
+<td style="text-align:left;">
+
+Center
+
+</td>
+
+<td style="text-align:right;">
+
+12
+
+</td>
+
+<td style="text-align:right;">
+
+909
+
+</td>
+
+<td style="text-align:right;">
+
+775
+
+</td>
+
+<td style="text-align:right;">
+
+322
+
+</td>
+
+<td style="text-align:right;">
+
+453
+
+</td>
+
+<td style="text-align:right;">
+
+678
+
+</td>
+
+<td style="text-align:right;">
+
+64.6
+
+</td>
+
+<td style="text-align:right;">
+
+26.8
+
+</td>
+
+<td style="text-align:right;">
+
+37.8
+
+</td>
+
+<td style="text-align:right;">
+
+56.5
+
+</td>
+
+<td style="text-align:right;">
+
+75.8
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Kevin Dineen
+
+</td>
+
+<td style="text-align:right;">
+
+8446423
+
+</td>
+
+<td style="text-align:left;">
+
+FALSE
+
+</td>
+
+<td style="text-align:left;">
+
+Right Wing
+
+</td>
+
+<td style="text-align:right;">
+
+12
+
+</td>
+
+<td style="text-align:right;">
+
+708
+
+</td>
+
+<td style="text-align:right;">
+
+544
+
+</td>
+
+<td style="text-align:right;">
+
+250
+
+</td>
+
+<td style="text-align:right;">
+
+294
+
+</td>
+
+<td style="text-align:right;">
+
+1439
+
+</td>
+
+<td style="text-align:right;">
+
+45.3
+
+</td>
+
+<td style="text-align:right;">
+
+20.8
+
+</td>
+
+<td style="text-align:right;">
+
+24.5
+
+</td>
+
+<td style="text-align:right;">
+
+119.9
+
+</td>
+
+<td style="text-align:right;">
+
+59.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Rod Brind’Amour
+
+</td>
+
+<td style="text-align:right;">
+
+8445735
+
+</td>
+
+<td style="text-align:left;">
+
+FALSE
+
+</td>
+
+<td style="text-align:left;">
+
+Center
+
+</td>
+
+<td style="text-align:right;">
+
+10
+
+</td>
+
+<td style="text-align:right;">
+
+694
+
+</td>
+
+<td style="text-align:right;">
+
+473
+
+</td>
+
+<td style="text-align:right;">
+
+174
+
+</td>
+
+<td style="text-align:right;">
+
+299
+
+</td>
+
+<td style="text-align:right;">
+
+398
+
+</td>
+
+<td style="text-align:right;">
+
+47.3
+
+</td>
+
+<td style="text-align:right;">
+
+17.4
+
+</td>
+
+<td style="text-align:right;">
+
+29.9
+
+</td>
+
+<td style="text-align:right;">
+
+39.8
+
+</td>
+
+<td style="text-align:right;">
+
+69.4
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Jeff O’Neill
+
+</td>
+
+<td style="text-align:right;">
+
+8460495
+
+</td>
+
+<td style="text-align:left;">
+
+FALSE
+
+</td>
+
+<td style="text-align:left;">
+
+Center
+
+</td>
+
+<td style="text-align:right;">
+
+9
+
+</td>
+
+<td style="text-align:right;">
+
+673
+
+</td>
+
+<td style="text-align:right;">
+
+416
+
+</td>
+
+<td style="text-align:right;">
+
+198
+
+</td>
+
+<td style="text-align:right;">
+
+218
+
+</td>
+
+<td style="text-align:right;">
+
+552
+
+</td>
+
+<td style="text-align:right;">
+
+46.2
+
+</td>
+
+<td style="text-align:right;">
+
+22.0
+
+</td>
+
+<td style="text-align:right;">
+
+24.2
+
+</td>
+
+<td style="text-align:right;">
+
+61.3
+
+</td>
+
+<td style="text-align:right;">
+
+74.8
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Adam Burt
+
+</td>
+
+<td style="text-align:right;">
+
+8445783
+
+</td>
+
+<td style="text-align:left;">
+
+FALSE
+
+</td>
+
+<td style="text-align:left;">
+
+Defenseman
+
+</td>
+
+<td style="text-align:right;">
+
+11
+
+</td>
+
+<td style="text-align:right;">
+
+626
+
+</td>
+
+<td style="text-align:right;">
+
+142
+
+</td>
+
+<td style="text-align:right;">
+
+36
+
+</td>
+
+<td style="text-align:right;">
+
+106
+
+</td>
+
+<td style="text-align:right;">
+
+875
+
+</td>
+
+<td style="text-align:right;">
+
+12.9
+
+</td>
+
+<td style="text-align:right;">
+
+3.3
+
+</td>
+
+<td style="text-align:right;">
+
+9.6
+
+</td>
+
+<td style="text-align:right;">
+
+79.5
+
+</td>
+
+<td style="text-align:right;">
+
+56.9
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Jeff Skinner
+
+</td>
+
+<td style="text-align:right;">
+
+8475784
+
+</td>
+
+<td style="text-align:left;">
+
+TRUE
+
+</td>
+
+<td style="text-align:left;">
+
+Left Wing
+
+</td>
+
+<td style="text-align:right;">
+
+8
+
+</td>
+
+<td style="text-align:right;">
+
+579
+
+</td>
+
+<td style="text-align:right;">
+
+379
+
+</td>
+
+<td style="text-align:right;">
+
+204
+
+</td>
+
+<td style="text-align:right;">
+
+175
+
+</td>
+
+<td style="text-align:right;">
+
+268
+
+</td>
+
+<td style="text-align:right;">
+
+47.4
+
+</td>
+
+<td style="text-align:right;">
+
+25.5
+
+</td>
+
+<td style="text-align:right;">
+
+21.9
+
+</td>
+
+<td style="text-align:right;">
+
+33.5
+
+</td>
+
+<td style="text-align:right;">
+
+72.4
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Justin Faulk
+
+</td>
+
+<td style="text-align:right;">
+
+8475753
+
+</td>
+
+<td style="text-align:left;">
+
+TRUE
+
+</td>
+
+<td style="text-align:left;">
+
+Defenseman
+
+</td>
+
+<td style="text-align:right;">
+
+8
+
+</td>
+
+<td style="text-align:right;">
+
+559
+
+</td>
+
+<td style="text-align:right;">
+
+258
+
+</td>
+
+<td style="text-align:right;">
+
+85
+
+</td>
+
+<td style="text-align:right;">
+
+173
+
+</td>
+
+<td style="text-align:right;">
+
+265
+
+</td>
+
+<td style="text-align:right;">
+
+32.2
+
+</td>
+
+<td style="text-align:right;">
+
+10.6
+
+</td>
+
+<td style="text-align:right;">
+
+21.6
+
+</td>
+
+<td style="text-align:right;">
+
+33.1
+
+</td>
+
+<td style="text-align:right;">
+
+69.9
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Erik Cole
+
+</td>
+
+<td style="text-align:right;">
+
+8467396
+
+</td>
+
+<td style="text-align:left;">
+
+FALSE
+
+</td>
+
+<td style="text-align:left;">
+
+Left Wing
+
+</td>
+
+<td style="text-align:right;">
+
+9
+
+</td>
+
+<td style="text-align:right;">
+
+557
+
+</td>
+
+<td style="text-align:right;">
+
+363
+
+</td>
+
+<td style="text-align:right;">
+
+168
+
+</td>
+
+<td style="text-align:right;">
+
+195
+
+</td>
+
+<td style="text-align:right;">
+
+494
+
+</td>
+
+<td style="text-align:right;">
+
+40.3
+
+</td>
+
+<td style="text-align:right;">
+
+18.7
+
+</td>
+
+<td style="text-align:right;">
+
+21.7
+
+</td>
+
+<td style="text-align:right;">
+
+54.9
+
+</td>
+
+<td style="text-align:right;">
+
+61.9
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ### Numeric Summaries
 
