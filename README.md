@@ -153,7 +153,7 @@ tibble for data analysis.
 
 ## Background
 
-The professional hockey leaague across the United States and Canada is
+The professional hockey league across the United States and Canada is
 the National Hockey League (NHL), which provides an API for public
 consumption. The NHL offers almost no official documentation for this
 connection and its available endpoints. To help navigate this API, open
@@ -386,14 +386,18 @@ franMod <- fran %>% mutate(teamName = paste(fran$teamPlaceName, fran$teamCommonN
 # categorical variable 'positionCode' with full position name. Select
 # relevant varibales in desired order.
 franSkateMod <- franSkate %>% mutate(playerName = paste(franSkate$firstName, 
-    franSkate$lastName)) %>% arrange(desc(gamesPlayed))
+    franSkate$lastName)) %>% mutate(avgPointsPerSeason = round(points/seasons, 
+    1)) %>% mutate(avgGoalsPerSeason = round(goals/seasons, 1)) %>% mutate(avgAssistsPerSeason = round(assists/seasons, 
+    1)) %>% mutate(avgPenaltyMinutesPerSeason = round(penaltyMinutes/seasons, 
+    1)) %>% mutate(avgGamesPlayedPerSeason = round(gamesPlayed/seasons, 
+    1)) %>% arrange(desc(gamesPlayed))
 franSkateMod$positionCode <- factor(franSkateMod$positionCode, c("C", "D", 
     "L", "R"), labels = c("Center", "Defenseman", "Left Wing", "Right Wing"))
 franSkateMod <- franSkateMod %>% rename(position = "positionCode") %>% 
-    select(playerName, playerId, activePlayer, position, seasons, gamesPlayed, 
-        points, goals, assists, penaltyMinutes, mostPointsOneSeason, mostPointsOneGame, 
-        mostGoalsOneSeason, mostGoalsOneGame, mostAssistsOneSeason, mostAssistsOneGame, 
-        mostPenaltyMinutesOneSeason)
+    filter(gamesPlayed >= 10) %>% select(playerName, playerId, activePlayer, 
+    position, seasons, gamesPlayed, points, goals, assists, penaltyMinutes, 
+    avgPointsPerSeason, avgGoalsPerSeason, avgAssistsPerSeason, avgPenaltyMinutesPerSeason, 
+    avgGamesPlayedPerSeason)
 ```
 
 | teamName            | franchiseId | teamId | firstSeasonId | lastSeasonId | activeTeam |
@@ -411,18 +415,18 @@ franSkateMod <- franSkateMod %>% rename(position = "positionCode") %>%
 
 Preview of modified Franchise Data
 
-| playerName      | playerId | activePlayer | position   | seasons | gamesPlayed | points | goals | assists | penaltyMinutes | mostPointsOneSeason | mostPointsOneGame | mostGoalsOneSeason | mostGoalsOneGame | mostAssistsOneSeason | mostAssistsOneGame | mostPenaltyMinutesOneSeason |
-| :-------------- | -------: | :----------- | :--------- | ------: | ----------: | -----: | ----: | ------: | -------------: | ------------------: | ----------------: | -----------------: | ---------------: | -------------------: | -----------------: | --------------------------: |
-| Ron Francis     |  8446951 | FALSE        | Center     |      16 |        1186 |   1175 |   382 |     793 |            682 |                 101 |                 6 |                 32 |                4 |                   69 |                  6 |                          87 |
-| Glen Wesley     |  8452371 | FALSE        | Defenseman |      13 |         913 |    227 |    51 |     176 |            620 |                  32 |                 3 |                  8 |                2 |                   26 |                  3 |                          88 |
-| Eric Staal      |  8470595 | TRUE         | Center     |      12 |         909 |    775 |   322 |     453 |            678 |                 100 |                 6 |                 45 |                4 |                   55 |                  4 |                          81 |
-| Kevin Dineen    |  8446423 | FALSE        | Right Wing |      12 |         708 |    544 |   250 |     294 |           1439 |                  89 |                 5 |                 45 |                3 |                   44 |                  4 |                         217 |
-| Rod Brind’Amour |  8445735 | FALSE        | Center     |      10 |         694 |    473 |   174 |     299 |            398 |                  82 |                 5 |                 31 |                3 |                   56 |                  4 |                          68 |
-| Jeff O’Neill    |  8460495 | FALSE        | Center     |       9 |         673 |    416 |   198 |     218 |            552 |                  67 |                 4 |                 41 |                3 |                   38 |                  3 |                         106 |
-| Adam Burt       |  8445783 | FALSE        | Defenseman |      11 |         626 |    142 |    36 |     106 |            875 |                  24 |                 3 |                  9 |                2 |                   17 |                  2 |                         121 |
-| Jeff Skinner    |  8475784 | TRUE         | Left Wing  |       8 |         579 |    379 |   204 |     175 |            268 |                  63 |                 3 |                 37 |                3 |                   32 |                  3 |                          56 |
-| Justin Faulk    |  8475753 | TRUE         | Defenseman |       8 |         559 |    258 |    85 |     173 |            265 |                  49 |                 3 |                 17 |                3 |                   34 |                  3 |                          48 |
-| Erik Cole       |  8467396 | FALSE        | Left Wing  |       9 |         557 |    363 |   168 |     195 |            494 |                  61 |                 4 |                 30 |                3 |                   32 |                  4 |                          93 |
+| playerName      | playerId | activePlayer | position   | seasons | gamesPlayed | points | goals | assists | penaltyMinutes | avgPointsPerSeason | avgGoalsPerSeason | avgAssistsPerSeason | avgPenaltyMinutesPerSeason | avgGamesPlayedPerSeason |
+| :-------------- | -------: | :----------- | :--------- | ------: | ----------: | -----: | ----: | ------: | -------------: | -----------------: | ----------------: | ------------------: | -------------------------: | ----------------------: |
+| Ron Francis     |  8446951 | FALSE        | Center     |      16 |        1186 |   1175 |   382 |     793 |            682 |               73.4 |              23.9 |                49.6 |                       42.6 |                    74.1 |
+| Glen Wesley     |  8452371 | FALSE        | Defenseman |      13 |         913 |    227 |    51 |     176 |            620 |               17.5 |               3.9 |                13.5 |                       47.7 |                    70.2 |
+| Eric Staal      |  8470595 | TRUE         | Center     |      12 |         909 |    775 |   322 |     453 |            678 |               64.6 |              26.8 |                37.8 |                       56.5 |                    75.8 |
+| Kevin Dineen    |  8446423 | FALSE        | Right Wing |      12 |         708 |    544 |   250 |     294 |           1439 |               45.3 |              20.8 |                24.5 |                      119.9 |                    59.0 |
+| Rod Brind’Amour |  8445735 | FALSE        | Center     |      10 |         694 |    473 |   174 |     299 |            398 |               47.3 |              17.4 |                29.9 |                       39.8 |                    69.4 |
+| Jeff O’Neill    |  8460495 | FALSE        | Center     |       9 |         673 |    416 |   198 |     218 |            552 |               46.2 |              22.0 |                24.2 |                       61.3 |                    74.8 |
+| Adam Burt       |  8445783 | FALSE        | Defenseman |      11 |         626 |    142 |    36 |     106 |            875 |               12.9 |               3.3 |                 9.6 |                       79.5 |                    56.9 |
+| Jeff Skinner    |  8475784 | TRUE         | Left Wing  |       8 |         579 |    379 |   204 |     175 |            268 |               47.4 |              25.5 |                21.9 |                       33.5 |                    72.4 |
+| Justin Faulk    |  8475753 | TRUE         | Defenseman |       8 |         559 |    258 |    85 |     173 |            265 |               32.2 |              10.6 |                21.6 |                       33.1 |                    69.9 |
+| Erik Cole       |  8467396 | FALSE        | Left Wing  |       9 |         557 |    363 |   168 |     195 |            494 |               40.3 |              18.7 |                21.7 |                       54.9 |                    61.9 |
 
 Preview of modified Skater Data
 
@@ -430,7 +434,53 @@ Preview of modified Skater Data
 
 Provide contingecy tables and numeric summaries as required.
 
+|         | avgPointsPerSeason | avgGoalsPerSeason | avgAssistsPerSeason | avgPenaltyMinutesPerSeason |
+| ------- | -----------------: | ----------------: | ------------------: | -------------------------: |
+| Min.    |                0.0 |               0.0 |                 0.0 |                        0.0 |
+| 1st Qu. |                4.5 |               1.0 |                 4.0 |                       15.3 |
+| Median  |               10.0 |               2.0 |                 8.5 |                       28.7 |
+| Mean    |               12.8 |               2.9 |                10.0 |                       40.7 |
+| 3rd Qu. |               18.0 |               4.0 |                13.7 |                       58.0 |
+| Max.    |               66.0 |              17.0 |                49.0 |                      181.0 |
+
+Summary for Skater Position: Defenseman
+
+|         | avgPointsPerSeason | avgGoalsPerSeason | avgAssistsPerSeason | avgPenaltyMinutesPerSeason |
+| ------- | -----------------: | ----------------: | ------------------: | -------------------------: |
+| Min.    |                0.0 |               0.0 |                 0.0 |                        0.0 |
+| 1st Qu. |                6.8 |               2.1 |                 4.2 |                        7.0 |
+| Median  |               14.4 |               5.7 |                 9.0 |                       16.0 |
+| Mean    |               21.2 |               8.2 |                13.0 |                       24.8 |
+| 3rd Qu. |               30.2 |              12.4 |                19.5 |                       29.8 |
+| Max.    |              105.0 |              42.0 |                63.0 |                      142.4 |
+
+Summary for Skater Position: Center
+
+|         | avgPointsPerSeason | avgGoalsPerSeason | avgAssistsPerSeason | avgPenaltyMinutesPerSeason |
+| ------- | -----------------: | ----------------: | ------------------: | -------------------------: |
+| Min.    |                0.0 |               0.0 |                 0.0 |                        0.0 |
+| 1st Qu. |                5.2 |               2.1 |                 2.6 |                       10.2 |
+| Median  |               12.5 |               5.0 |                 7.2 |                       22.0 |
+| Mean    |               18.7 |               8.1 |                10.5 |                       40.4 |
+| 3rd Qu. |               28.4 |              12.3 |                15.0 |                       54.8 |
+| Max.    |               75.4 |              43.8 |                43.0 |                      242.0 |
+
+Summary for Skater Position: Left Wing
+
+|         | avgPointsPerSeason | avgGoalsPerSeason | avgAssistsPerSeason | avgPenaltyMinutesPerSeason |
+| ------- | -----------------: | ----------------: | ------------------: | -------------------------: |
+| Min.    |                0.0 |               0.0 |                 0.0 |                        0.0 |
+| 1st Qu. |                4.5 |               2.0 |                 2.5 |                       12.0 |
+| Median  |                9.5 |               4.5 |                 6.0 |                       21.5 |
+| Mean    |               16.3 |               6.9 |                 9.4 |                       38.4 |
+| 3rd Qu. |               25.7 |              11.0 |                15.0 |                       49.5 |
+| Max.    |               67.2 |              32.0 |                35.2 |                      246.0 |
+
+Summary for Skater Position: Right Wing
+
 ### Visuals
 
 Create some plots (bar, box, scatter) with discussion of observations
 for each.
+
+![](README_files/figure-gfm/plots-1.png)<!-- -->![](README_files/figure-gfm/plots-2.png)<!-- -->![](README_files/figure-gfm/plots-3.png)<!-- -->![](README_files/figure-gfm/plots-4.png)<!-- -->![](README_files/figure-gfm/plots-5.png)<!-- -->
