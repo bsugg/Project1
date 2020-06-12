@@ -166,26 +166,31 @@ The table `franSkate` with player skater data for the Carolina Hurricanes has be
 # Format "fran" table and create modified version. Add 2 new variables, "teamName" and "activeTeam". Rename variables as needed. Select relevant varibales and arrange by "teamName".
 franMod <- fran %>% mutate(teamName=paste(fran$teamPlaceName,fran$teamCommonName)) %>% mutate(activeTeam=as.integer(is.na(lastSeasonId))) %>%  rename("franchiseId"="id","teamId"="mostRecentTeamId") %>% select(teamName,franchiseId,teamId,firstSeasonId,lastSeasonId,activeTeam) %>% arrange(teamName)
 # Format "franSkate" table and create modified version. Add 1 new variable, "playerName" and arrange by gamesPlayed. Replace levels of categorical variable "positionCode" with full position name. Select relevant varibales in desired order.
-franSkateMod <- franSkate %>% mutate(playerName=paste(franSkate$firstName,franSkate$lastName)) %>% mutate(avgPointsPerSeason=round(points/seasons,1)) %>%  mutate(avgGoalsPerSeason=round(goals/seasons,1)) %>% mutate(avgAssistsPerSeason=round(assists/seasons,1)) %>% mutate(avgPenaltyMinutesPerSeason=round(penaltyMinutes/seasons,1)) %>% mutate(avgGamesPlayedPerSeason=round(gamesPlayed/seasons,1)) %>% arrange(desc(gamesPlayed))
+franSkateMod <- franSkate %>% mutate(playerName=paste(franSkate$firstName,franSkate$lastName)) %>% mutate(avgPointsPerSeason=round(points/seasons,1)) %>%  mutate(avgGoalsPerSeason=round(goals/seasons,1)) %>% mutate(avgAssistsPerSeason=round(assists/seasons,1)) %>%  mutate(avgPenaltyMinutesPerSeason=round(penaltyMinutes/seasons,1)) %>% mutate(avgGamesPlayedPerSeason=round(gamesPlayed/seasons,1)) %>% mutate(seniority=seasons) %>% arrange(desc(gamesPlayed))
 franSkateMod$positionCode <- factor(franSkateMod$positionCode,c("C","D","L","R"),labels = c("Center","Defenseman","Left Wing","Right Wing"))
-franSkateMod <- franSkateMod %>% rename("position"="positionCode") %>% filter(gamesPlayed>=10) %>% select(playerName, playerId, activePlayer, position, seasons, gamesPlayed, points, goals, assists, penaltyMinutes, avgPointsPerSeason, avgGoalsPerSeason, avgAssistsPerSeason, avgPenaltyMinutesPerSeason, avgGamesPlayedPerSeason)
+franSkateMod$seniority <- factor(ifelse(franSkateMod$seniority==1,"1 year Rookie",ifelse(franSkateMod$seniority<=5,"2-5 year Veteran","6+ year Seasoned Veteran")))
+franSkateMod$activePlayer <- factor(ifelse(franSkateMod$activePlayer=="TRUE","Active","NonActive"))
+franSkateMod <- franSkateMod %>% rename("position"="positionCode") %>% filter(gamesPlayed>=10) %>% select(playerName, playerId, activePlayer, position, seasons, seniority, gamesPlayed, points, goals, assists, penaltyMinutes, avgPointsPerSeason, avgGoalsPerSeason, avgAssistsPerSeason, avgPenaltyMinutesPerSeason, avgGamesPlayedPerSeason)
 ```
 
 ```{r showTables, echo=FALSE}
-knitr::kable(table(franSkateMod$position),format="html",caption="Frequency of Position",col.names = c("Position","Frequency"))
-knitr::kable(head(franMod,n=10),format="html",caption="Preview of modified Franchise Data")
-knitr::kable(head(franSkateMod,n=10),format="html",caption="Preview of modified Skater Data")
+# Preview tables
+knitr::kable(head(franMod,n=10),format="html",caption="Preview of Modified Franchise Data")
+knitr::kable(head(franSkateMod,n=10),format="html",caption="Preview of Modified Skater Data for Carolina Hurricanes")
+# Contingency tables
+knitr::kable(table(franSkateMod$position,franSkateMod$seniority),format="html",caption="Frequency of Skater Position by Seniority")
+knitr::kable(table(franSkateMod$activePlayer,franSkateMod$position),format="html",caption="Frequency of Active Players by Skater Position")
 ```
 
 ### Numeric Summaries  
 
 Provide contingecy tables and numeric summaries as required.  
 
-```{r summaryOfSkaterByPosition, echo=FALSE}
-# Function created that takes player position and outputs a numeric summary of key player stats
+```{r summaryOfRetiredSkaterByPosition, echo=FALSE}
+# Function created that takes NonActive players by position and outputs a numeric summary of key stats
 skateSum <- function(x=""){
-  skateFun <- franSkateMod %>% filter(position==x)
-  knitr::kable(cbind("avgPointsPerSeason"=round(summary(skateFun$avgPointsPerSeason),1),"avgGoalsPerSeason"=round(summary(skateFun$avgGoalsPerSeason),1),"avgAssistsPerSeason"=round(summary(skateFun$avgAssistsPerSeason),1),"avgPenaltyMinutesPerSeason"=round(summary(skateFun$avgPenaltyMinutesPerSeason),1)),caption=paste("Summary for Skater Position:",x))
+  skateFun <- franSkateMod %>% filter(position==x,activePlayer=="NonActive")
+  knitr::kable(cbind("Seasons Played"=round(summary(skateFun$seasons),1),"Games Played"=round(summary(skateFun$gamesPlayed),1),"Goals Scored"=round(summary(skateFun$goals),1),"Assists Given"=round(summary(skateFun$assists),1)),format="html",caption=paste("Summary of NonActive Players for Skater Position:",x))
 }
 # Call custom function 4 times, once per skater position.
 skateSum("Defenseman")
@@ -201,16 +206,32 @@ Create some plots (bar, box, scatter) with discussion of observations for each.
 
 ```{r plots, echo=FALSE}
 # Histogram creation
-histSkate <- ggplot(data=franSkateMod,aes(x=avgGoalsPerSeason))
-histSkate + geom_histogram()
-# Boxplot creation
+histSkate <- ggplot(data=franSkateMod,aes(x=seasons))
+histSkate + geom_histogram(bins=10) + labs(title="Histogram of Seasons Played")
+# Cluster bar chart creation
+clustSkate <- ggplot(data=franSkateMod,aes(x=position))
+clustSkate + geom_bar(aes(fill=as.factor(seniority)),position="dodge") + labs(x="Player Position") + scale_fill_discrete(name="")
+# Boxplot creation by player position
+boxSkatePoints <- ggplot(data=franSkateMod)
+boxSkatePoints + geom_boxplot(aes(x=position,y=avgPointsPerSeason,)) + geom_jitter(aes(x=position,y=avgPointsPerSeason,color=position)) + labs(title="Boxplot for Average Points Per Season")
 boxSkateGoal <- ggplot(data=franSkateMod)
 boxSkateGoal + geom_boxplot(aes(x=position,y=avgGoalsPerSeason,)) + geom_jitter(aes(x=position,y=avgGoalsPerSeason,color=position)) + labs(title="Boxplot for Average Goals Per Season")
 boxSkateAssist <- ggplot(data=franSkateMod)
 boxSkateAssist + geom_boxplot(aes(x=position,y=avgAssistsPerSeason,)) + geom_jitter(aes(x=position,y=avgAssistsPerSeason,color=position)) + labs(title="Boxplot for Average Assists Per Season")
 boxSkatePenalty <- ggplot(data=franSkateMod)
 boxSkatePenalty + geom_boxplot(aes(x=position,y=avgPenaltyMinutesPerSeason,)) + geom_jitter(aes(x=position,y=avgPenaltyMinutesPerSeason,color=position)) + labs(title="Boxplot for Average Penalty Minutes Per Season")
+# Boxplot creation by player seniority
+boxSkatePoints <- ggplot(data=franSkateMod)
+boxSkatePoints + geom_boxplot(aes(x=seniority,y=avgPointsPerSeason,)) + geom_jitter(aes(x=seniority,y=avgPointsPerSeason,color=seniority)) + labs(title="Boxplot for Average Points Per Season")
+boxSkateGoal <- ggplot(data=franSkateMod)
+boxSkateGoal + geom_boxplot(aes(x=seniority,y=avgGoalsPerSeason,)) + geom_jitter(aes(x=seniority,y=avgGoalsPerSeason,color=seniority)) + labs(title="Boxplot for Average Goals Per Season")
+boxSkateAssist <- ggplot(data=franSkateMod)
+boxSkateAssist + geom_boxplot(aes(x=seniority,y=avgAssistsPerSeason,)) + geom_jitter(aes(x=seniority,y=avgAssistsPerSeason,color=seniority)) + labs(title="Boxplot for Average Assists Per Season")
+boxSkatePenalty <- ggplot(data=franSkateMod)
+boxSkatePenalty + geom_boxplot(aes(x=seniority,y=avgPenaltyMinutesPerSeason,)) + geom_jitter(aes(x=seniority,y=avgPenaltyMinutesPerSeason,color=seniority)) + labs(title="Boxplot for Average Penalty Minutes Per Season")
 # Scatter plot creation
 scatterSkate <- ggplot(data=franSkateMod,aes(x=avgGoalsPerSeason,y=avgAssistsPerSeason,color=position,group=position))
 scatterSkate + geom_point() + geom_smooth(method=lm,color="green") + labs(title="avgGoalsPerSeason vs avgPenaltyMinutesPerSeason")
+scatterSkate2 <- ggplot(data=franSkateMod,aes(x=seasons,y=avgGoalsPerSeason,color=position,group=position))
+scatterSkate2 + geom_point() + geom_smooth(method=lm) + labs(x="Seasons Played",y="Average Goals Scored Per Season Played",title="Seasons Played vs Average Goals Scored Per Season")
 ```

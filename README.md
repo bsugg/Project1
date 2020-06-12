@@ -390,119 +390,25 @@ franSkateMod <- franSkate %>% mutate(playerName = paste(franSkate$firstName,
     1)) %>% mutate(avgGoalsPerSeason = round(goals/seasons, 1)) %>% mutate(avgAssistsPerSeason = round(assists/seasons, 
     1)) %>% mutate(avgPenaltyMinutesPerSeason = round(penaltyMinutes/seasons, 
     1)) %>% mutate(avgGamesPlayedPerSeason = round(gamesPlayed/seasons, 
-    1)) %>% arrange(desc(gamesPlayed))
+    1)) %>% mutate(seniority = seasons) %>% arrange(desc(gamesPlayed))
 franSkateMod$positionCode <- factor(franSkateMod$positionCode, c("C", "D", 
     "L", "R"), labels = c("Center", "Defenseman", "Left Wing", "Right Wing"))
+franSkateMod$seniority <- factor(ifelse(franSkateMod$seniority == 1, "1 year Rookie", 
+    ifelse(franSkateMod$seniority <= 5, "2-5 year Veteran", "6+ year Seasoned Veteran")))
+franSkateMod$activePlayer <- factor(ifelse(franSkateMod$activePlayer == 
+    "TRUE", "Active", "NonActive"))
 franSkateMod <- franSkateMod %>% rename(position = "positionCode") %>% 
     filter(gamesPlayed >= 10) %>% select(playerName, playerId, activePlayer, 
-    position, seasons, gamesPlayed, points, goals, assists, penaltyMinutes, 
-    avgPointsPerSeason, avgGoalsPerSeason, avgAssistsPerSeason, avgPenaltyMinutesPerSeason, 
-    avgGamesPlayedPerSeason)
+    position, seasons, seniority, gamesPlayed, points, goals, assists, 
+    penaltyMinutes, avgPointsPerSeason, avgGoalsPerSeason, avgAssistsPerSeason, 
+    avgPenaltyMinutesPerSeason, avgGamesPlayedPerSeason)
 ```
 
 <table>
 
 <caption>
 
-Frequency of Position
-
-</caption>
-
-<thead>
-
-<tr>
-
-<th style="text-align:left;">
-
-Position
-
-</th>
-
-<th style="text-align:right;">
-
-Frequency
-
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td style="text-align:left;">
-
-Center
-
-</td>
-
-<td style="text-align:right;">
-
-91
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Defenseman
-
-</td>
-
-<td style="text-align:right;">
-
-133
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Left Wing
-
-</td>
-
-<td style="text-align:right;">
-
-91
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Right Wing
-
-</td>
-
-<td style="text-align:right;">
-
-81
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-<table>
-
-<caption>
-
-Preview of modified Franchise Data
+Preview of Modified Franchise Data
 
 </caption>
 
@@ -960,7 +866,7 @@ NA
 
 <caption>
 
-Preview of modified Skater Data
+Preview of Modified Skater Data for Carolina Hurricanes
 
 </caption>
 
@@ -995,6 +901,12 @@ position
 <th style="text-align:right;">
 
 seasons
+
+</th>
+
+<th style="text-align:left;">
+
+seniority
 
 </th>
 
@@ -1080,7 +992,7 @@ Ron Francis
 
 <td style="text-align:left;">
 
-FALSE
+NonActive
 
 </td>
 
@@ -1093,6 +1005,12 @@ Center
 <td style="text-align:right;">
 
 16
+
+</td>
+
+<td style="text-align:left;">
+
+6+ year Seasoned Veteran
 
 </td>
 
@@ -1174,7 +1092,7 @@ Glen Wesley
 
 <td style="text-align:left;">
 
-FALSE
+NonActive
 
 </td>
 
@@ -1187,6 +1105,12 @@ Defenseman
 <td style="text-align:right;">
 
 13
+
+</td>
+
+<td style="text-align:left;">
+
+6+ year Seasoned Veteran
 
 </td>
 
@@ -1268,7 +1192,7 @@ Eric Staal
 
 <td style="text-align:left;">
 
-TRUE
+Active
 
 </td>
 
@@ -1281,6 +1205,12 @@ Center
 <td style="text-align:right;">
 
 12
+
+</td>
+
+<td style="text-align:left;">
+
+6+ year Seasoned Veteran
 
 </td>
 
@@ -1362,7 +1292,7 @@ Kevin Dineen
 
 <td style="text-align:left;">
 
-FALSE
+NonActive
 
 </td>
 
@@ -1375,6 +1305,12 @@ Right Wing
 <td style="text-align:right;">
 
 12
+
+</td>
+
+<td style="text-align:left;">
+
+6+ year Seasoned Veteran
 
 </td>
 
@@ -1456,7 +1392,7 @@ Rod Brind’Amour
 
 <td style="text-align:left;">
 
-FALSE
+NonActive
 
 </td>
 
@@ -1469,6 +1405,12 @@ Center
 <td style="text-align:right;">
 
 10
+
+</td>
+
+<td style="text-align:left;">
+
+6+ year Seasoned Veteran
 
 </td>
 
@@ -1550,7 +1492,7 @@ Jeff O’Neill
 
 <td style="text-align:left;">
 
-FALSE
+NonActive
 
 </td>
 
@@ -1563,6 +1505,12 @@ Center
 <td style="text-align:right;">
 
 9
+
+</td>
+
+<td style="text-align:left;">
+
+6+ year Seasoned Veteran
 
 </td>
 
@@ -1644,7 +1592,7 @@ Adam Burt
 
 <td style="text-align:left;">
 
-FALSE
+NonActive
 
 </td>
 
@@ -1657,6 +1605,12 @@ Defenseman
 <td style="text-align:right;">
 
 11
+
+</td>
+
+<td style="text-align:left;">
+
+6+ year Seasoned Veteran
 
 </td>
 
@@ -1738,7 +1692,7 @@ Jeff Skinner
 
 <td style="text-align:left;">
 
-TRUE
+Active
 
 </td>
 
@@ -1751,6 +1705,12 @@ Left Wing
 <td style="text-align:right;">
 
 8
+
+</td>
+
+<td style="text-align:left;">
+
+6+ year Seasoned Veteran
 
 </td>
 
@@ -1832,7 +1792,7 @@ Justin Faulk
 
 <td style="text-align:left;">
 
-TRUE
+Active
 
 </td>
 
@@ -1845,6 +1805,12 @@ Defenseman
 <td style="text-align:right;">
 
 8
+
+</td>
+
+<td style="text-align:left;">
+
+6+ year Seasoned Veteran
 
 </td>
 
@@ -1926,7 +1892,7 @@ Erik Cole
 
 <td style="text-align:left;">
 
-FALSE
+NonActive
 
 </td>
 
@@ -1939,6 +1905,12 @@ Left Wing
 <td style="text-align:right;">
 
 9
+
+</td>
+
+<td style="text-align:left;">
+
+6+ year Seasoned Veteran
 
 </td>
 
@@ -2008,57 +1980,1303 @@ Left Wing
 
 </table>
 
+<table>
+
+<caption>
+
+Frequency of Skater Position by Seniority
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+</th>
+
+<th style="text-align:right;">
+
+1 year Rookie
+
+</th>
+
+<th style="text-align:right;">
+
+2-5 year Veteran
+
+</th>
+
+<th style="text-align:right;">
+
+6+ year Seasoned Veteran
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Center
+
+</td>
+
+<td style="text-align:right;">
+
+24
+
+</td>
+
+<td style="text-align:right;">
+
+57
+
+</td>
+
+<td style="text-align:right;">
+
+10
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Defenseman
+
+</td>
+
+<td style="text-align:right;">
+
+35
+
+</td>
+
+<td style="text-align:right;">
+
+81
+
+</td>
+
+<td style="text-align:right;">
+
+17
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Left Wing
+
+</td>
+
+<td style="text-align:right;">
+
+26
+
+</td>
+
+<td style="text-align:right;">
+
+53
+
+</td>
+
+<td style="text-align:right;">
+
+12
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Right Wing
+
+</td>
+
+<td style="text-align:right;">
+
+26
+
+</td>
+
+<td style="text-align:right;">
+
+46
+
+</td>
+
+<td style="text-align:right;">
+
+9
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<table>
+
+<caption>
+
+Frequency of Active Players by Skater Position
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+</th>
+
+<th style="text-align:right;">
+
+Center
+
+</th>
+
+<th style="text-align:right;">
+
+Defenseman
+
+</th>
+
+<th style="text-align:right;">
+
+Left Wing
+
+</th>
+
+<th style="text-align:right;">
+
+Right Wing
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Active
+
+</td>
+
+<td style="text-align:right;">
+
+19
+
+</td>
+
+<td style="text-align:right;">
+
+14
+
+</td>
+
+<td style="text-align:right;">
+
+12
+
+</td>
+
+<td style="text-align:right;">
+
+4
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+NonActive
+
+</td>
+
+<td style="text-align:right;">
+
+72
+
+</td>
+
+<td style="text-align:right;">
+
+119
+
+</td>
+
+<td style="text-align:right;">
+
+79
+
+</td>
+
+<td style="text-align:right;">
+
+77
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
 ### Numeric Summaries
 
 Provide contingecy tables and numeric summaries as required.
 
-|         | avgPointsPerSeason | avgGoalsPerSeason | avgAssistsPerSeason | avgPenaltyMinutesPerSeason |
-| ------- | -----------------: | ----------------: | ------------------: | -------------------------: |
-| Min.    |                0.0 |               0.0 |                 0.0 |                        0.0 |
-| 1st Qu. |                4.5 |               1.0 |                 4.0 |                       15.3 |
-| Median  |               10.0 |               2.0 |                 8.5 |                       28.7 |
-| Mean    |               12.8 |               2.9 |                10.0 |                       40.7 |
-| 3rd Qu. |               18.0 |               4.0 |                13.7 |                       58.0 |
-| Max.    |               66.0 |              17.0 |                49.0 |                      181.0 |
+<table>
 
-Summary for Skater Position: Defenseman
+<caption>
 
-|         | avgPointsPerSeason | avgGoalsPerSeason | avgAssistsPerSeason | avgPenaltyMinutesPerSeason |
-| ------- | -----------------: | ----------------: | ------------------: | -------------------------: |
-| Min.    |                0.0 |               0.0 |                 0.0 |                        0.0 |
-| 1st Qu. |                6.8 |               2.1 |                 4.2 |                        7.0 |
-| Median  |               14.4 |               5.7 |                 9.0 |                       16.0 |
-| Mean    |               21.2 |               8.2 |                13.0 |                       24.8 |
-| 3rd Qu. |               30.2 |              12.4 |                19.5 |                       29.8 |
-| Max.    |              105.0 |              42.0 |                63.0 |                      142.4 |
+Summary of NonActive Players for Skater Position: Defenseman
 
-Summary for Skater Position: Center
+</caption>
 
-|         | avgPointsPerSeason | avgGoalsPerSeason | avgAssistsPerSeason | avgPenaltyMinutesPerSeason |
-| ------- | -----------------: | ----------------: | ------------------: | -------------------------: |
-| Min.    |                0.0 |               0.0 |                 0.0 |                        0.0 |
-| 1st Qu. |                5.2 |               2.1 |                 2.6 |                       10.2 |
-| Median  |               12.5 |               5.0 |                 7.2 |                       22.0 |
-| Mean    |               18.7 |               8.1 |                10.5 |                       40.4 |
-| 3rd Qu. |               28.4 |              12.3 |                15.0 |                       54.8 |
-| Max.    |               75.4 |              43.8 |                43.0 |                      242.0 |
+<thead>
 
-Summary for Skater Position: Left Wing
+<tr>
 
-|         | avgPointsPerSeason | avgGoalsPerSeason | avgAssistsPerSeason | avgPenaltyMinutesPerSeason |
-| ------- | -----------------: | ----------------: | ------------------: | -------------------------: |
-| Min.    |                0.0 |               0.0 |                 0.0 |                        0.0 |
-| 1st Qu. |                4.5 |               2.0 |                 2.5 |                       12.0 |
-| Median  |                9.5 |               4.5 |                 6.0 |                       21.5 |
-| Mean    |               16.3 |               6.9 |                 9.4 |                       38.4 |
-| 3rd Qu. |               25.7 |              11.0 |                15.0 |                       49.5 |
-| Max.    |               67.2 |              32.0 |                35.2 |                      246.0 |
+<th style="text-align:left;">
 
-Summary for Skater Position: Right Wing
+</th>
+
+<th style="text-align:right;">
+
+Seasons Played
+
+</th>
+
+<th style="text-align:right;">
+
+Games Played
+
+</th>
+
+<th style="text-align:right;">
+
+Goals Scored
+
+</th>
+
+<th style="text-align:right;">
+
+Assists Given
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Min.
+
+</td>
+
+<td style="text-align:right;">
+
+1.0
+
+</td>
+
+<td style="text-align:right;">
+
+10.0
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+0.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+1st Qu.
+
+</td>
+
+<td style="text-align:right;">
+
+1.5
+
+</td>
+
+<td style="text-align:right;">
+
+42.5
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+6.5
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Median
+
+</td>
+
+<td style="text-align:right;">
+
+3.0
+
+</td>
+
+<td style="text-align:right;">
+
+82.0
+
+</td>
+
+<td style="text-align:right;">
+
+4
+
+</td>
+
+<td style="text-align:right;">
+
+16.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Mean
+
+</td>
+
+<td style="text-align:right;">
+
+3.1
+
+</td>
+
+<td style="text-align:right;">
+
+136.8
+
+</td>
+
+<td style="text-align:right;">
+
+9
+
+</td>
+
+<td style="text-align:right;">
+
+31.2
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+3rd Qu.
+
+</td>
+
+<td style="text-align:right;">
+
+4.0
+
+</td>
+
+<td style="text-align:right;">
+
+156.5
+
+</td>
+
+<td style="text-align:right;">
+
+11
+
+</td>
+
+<td style="text-align:right;">
+
+42.5
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Max.
+
+</td>
+
+<td style="text-align:right;">
+
+13.0
+
+</td>
+
+<td style="text-align:right;">
+
+913.0
+
+</td>
+
+<td style="text-align:right;">
+
+51
+
+</td>
+
+<td style="text-align:right;">
+
+196.0
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<table>
+
+<caption>
+
+Summary of NonActive Players for Skater Position: Center
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+</th>
+
+<th style="text-align:right;">
+
+Seasons Played
+
+</th>
+
+<th style="text-align:right;">
+
+Games Played
+
+</th>
+
+<th style="text-align:right;">
+
+Goals Scored
+
+</th>
+
+<th style="text-align:right;">
+
+Assists Given
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Min.
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+10.0
+
+</td>
+
+<td style="text-align:right;">
+
+0.0
+
+</td>
+
+<td style="text-align:right;">
+
+0.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+1st Qu.
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+42.2
+
+</td>
+
+<td style="text-align:right;">
+
+3.8
+
+</td>
+
+<td style="text-align:right;">
+
+6.8
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Median
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+77.5
+
+</td>
+
+<td style="text-align:right;">
+
+11.0
+
+</td>
+
+<td style="text-align:right;">
+
+21.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Mean
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+149.6
+
+</td>
+
+<td style="text-align:right;">
+
+32.1
+
+</td>
+
+<td style="text-align:right;">
+
+52.9
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+3rd Qu.
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+164.0
+
+</td>
+
+<td style="text-align:right;">
+
+32.5
+
+</td>
+
+<td style="text-align:right;">
+
+46.2
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Max.
+
+</td>
+
+<td style="text-align:right;">
+
+16
+
+</td>
+
+<td style="text-align:right;">
+
+1186.0
+
+</td>
+
+<td style="text-align:right;">
+
+382.0
+
+</td>
+
+<td style="text-align:right;">
+
+793.0
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<table>
+
+<caption>
+
+Summary of NonActive Players for Skater Position: Left Wing
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+</th>
+
+<th style="text-align:right;">
+
+Seasons Played
+
+</th>
+
+<th style="text-align:right;">
+
+Games Played
+
+</th>
+
+<th style="text-align:right;">
+
+Goals Scored
+
+</th>
+
+<th style="text-align:right;">
+
+Assists Given
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Min.
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+11.0
+
+</td>
+
+<td style="text-align:right;">
+
+0.0
+
+</td>
+
+<td style="text-align:right;">
+
+0.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+1st Qu.
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+33.5
+
+</td>
+
+<td style="text-align:right;">
+
+3.0
+
+</td>
+
+<td style="text-align:right;">
+
+5.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Median
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+76.0
+
+</td>
+
+<td style="text-align:right;">
+
+9.0
+
+</td>
+
+<td style="text-align:right;">
+
+13.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Mean
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+134.6
+
+</td>
+
+<td style="text-align:right;">
+
+29.4
+
+</td>
+
+<td style="text-align:right;">
+
+36.8
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+3rd Qu.
+
+</td>
+
+<td style="text-align:right;">
+
+5
+
+</td>
+
+<td style="text-align:right;">
+
+203.0
+
+</td>
+
+<td style="text-align:right;">
+
+46.0
+
+</td>
+
+<td style="text-align:right;">
+
+54.5
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Max.
+
+</td>
+
+<td style="text-align:right;">
+
+9
+
+</td>
+
+<td style="text-align:right;">
+
+557.0
+
+</td>
+
+<td style="text-align:right;">
+
+219.0
+
+</td>
+
+<td style="text-align:right;">
+
+215.0
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<table>
+
+<caption>
+
+Summary of NonActive Players for Skater Position: Right Wing
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+</th>
+
+<th style="text-align:right;">
+
+Seasons Played
+
+</th>
+
+<th style="text-align:right;">
+
+Games Played
+
+</th>
+
+<th style="text-align:right;">
+
+Goals Scored
+
+</th>
+
+<th style="text-align:right;">
+
+Assists Given
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Min.
+
+</td>
+
+<td style="text-align:right;">
+
+1.0
+
+</td>
+
+<td style="text-align:right;">
+
+10.0
+
+</td>
+
+<td style="text-align:right;">
+
+0.0
+
+</td>
+
+<td style="text-align:right;">
+
+0.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+1st Qu.
+
+</td>
+
+<td style="text-align:right;">
+
+1.0
+
+</td>
+
+<td style="text-align:right;">
+
+34.0
+
+</td>
+
+<td style="text-align:right;">
+
+2.0
+
+</td>
+
+<td style="text-align:right;">
+
+3.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Median
+
+</td>
+
+<td style="text-align:right;">
+
+2.0
+
+</td>
+
+<td style="text-align:right;">
+
+70.0
+
+</td>
+
+<td style="text-align:right;">
+
+9.0
+
+</td>
+
+<td style="text-align:right;">
+
+11.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Mean
+
+</td>
+
+<td style="text-align:right;">
+
+2.6
+
+</td>
+
+<td style="text-align:right;">
+
+118.5
+
+</td>
+
+<td style="text-align:right;">
+
+24.2
+
+</td>
+
+<td style="text-align:right;">
+
+31.3
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+3rd Qu.
+
+</td>
+
+<td style="text-align:right;">
+
+3.0
+
+</td>
+
+<td style="text-align:right;">
+
+147.0
+
+</td>
+
+<td style="text-align:right;">
+
+29.0
+
+</td>
+
+<td style="text-align:right;">
+
+35.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Max.
+
+</td>
+
+<td style="text-align:right;">
+
+12.0
+
+</td>
+
+<td style="text-align:right;">
+
+708.0
+
+</td>
+
+<td style="text-align:right;">
+
+250.0
+
+</td>
+
+<td style="text-align:right;">
+
+294.0
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ### Visuals
 
 Create some plots (bar, box, scatter) with discussion of observations
 for each.
 
-![](README_files/figure-gfm/plots-1.png)<!-- -->![](README_files/figure-gfm/plots-2.png)<!-- -->![](README_files/figure-gfm/plots-3.png)<!-- -->![](README_files/figure-gfm/plots-4.png)<!-- -->![](README_files/figure-gfm/plots-5.png)<!-- -->
+![](README_files/figure-gfm/plots-1.png)<!-- -->![](README_files/figure-gfm/plots-2.png)<!-- -->![](README_files/figure-gfm/plots-3.png)<!-- -->![](README_files/figure-gfm/plots-4.png)<!-- -->![](README_files/figure-gfm/plots-5.png)<!-- -->![](README_files/figure-gfm/plots-6.png)<!-- -->![](README_files/figure-gfm/plots-7.png)<!-- -->![](README_files/figure-gfm/plots-8.png)<!-- -->![](README_files/figure-gfm/plots-9.png)<!-- -->![](README_files/figure-gfm/plots-10.png)<!-- -->![](README_files/figure-gfm/plots-11.png)<!-- -->![](README_files/figure-gfm/plots-12.png)<!-- -->
