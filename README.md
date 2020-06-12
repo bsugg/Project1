@@ -361,40 +361,73 @@ franSkate
 
 ### The Data
 
-Two tables from the API query will be modfied and examined further. The
-table `fran` with franchise data has been formatted with two additional
-variables, some variables have been renamed for better understanding,
-columns selected in the order of desired appearance, and the overall
-table arranged by `teamName`.
+It’s important to note the franchise data for the Carolina Hurricanes
+dates back to 1979 when the organization was known as the Hartford
+Whalers. In 1997 the franchise moved to Raleigh, North Carolina and
+rebranded as the Carolina Hurricanes.
 
-The table `franSkate` with player skater data for the Carolina
-Hurricanes has been formatted with one additional variable, another
-categorical variable now has replaced values for better understanding of
-player position, columns selected in the order of desired appearance,
-and the overall table arranged by `gamesPlayed`.
+Over the span of 40+ years, the organization has seen many players come
+through its ranks. Some have played for the team for more than a decade,
+while others might have only been called in for one game. The following
+should be noted for the remainder of this vignette and data exploration:
+
+  - All player stats represent the contributions of that player
+    **during** their time with the Hartford Whalers and/or Carolina
+    Hurricanes. Seasons, goals, games played, etc … **all are
+    representative of the player’s time with the franchise**
+
+Two tables from the API query will be modfied and examined further. The
+table `fran` with franchise data has been formatted with 2 additional
+variables for full team name and an active team flag. Some variables
+have been renamed for better understanding, columns selected in the
+order of desired appearance, and the overall table arranged by
+`teamName`.
+
+The table `franSkate` with skater data for the Carolina Hurricanes has
+been formatted with 7 additional variables:
+
+  - 1 character type with full player name  
+  - 1 categorical type for player seniority based on seasons played  
+  - 5 numeric type with averages of key stats over number of seasons
+    played
+
+More intuitive categorical values for player position have replaced the
+original single letter abbreviations. Columns were selected in the order
+of desired appearance, and the overall table arranged by `gamesPlayed`.
+
+A filter was applied based on `gamesPlayed`, removing any players who
+have not played at least 10 games for the franchise. This helps reduce
+the amount of ad hoc cases where a player might have been temporarily
+called up from a minor league team for a few days to briefly fill in for
+an injured regular. The effort was to have the table reflect players who
+have had a *notable number of games played in at least 1 season* with
+the franchise. This reduced the overall table size from 478 observations
+to 396 observations, as of 12-June-2020.
 
 ``` r
-# Format 'fran' table and create modified version. Add 2 new variables,
-# 'teamName' and 'activeTeam'. Rename variables as needed. Select
-# relevant varibales and arrange by 'teamName'.
+# Format 'fran' table and create modified version. Add 2 new variables
+# with mutate(). Rename other variables as needed. Select relevant
+# varibales and arrange by 'teamName'.
 franMod <- fran %>% mutate(teamName = paste(fran$teamPlaceName, fran$teamCommonName)) %>% 
     mutate(activeTeam = as.integer(is.na(lastSeasonId))) %>% rename(franchiseId = "id", 
     teamId = "mostRecentTeamId") %>% select(teamName, franchiseId, teamId, 
     firstSeasonId, lastSeasonId, activeTeam) %>% arrange(teamName)
-# Format 'franSkate' table and create modified version. Add 1 new
-# variable, 'playerName' and arrange by gamesPlayed. Replace levels of
-# categorical variable 'positionCode' with full position name. Select
-# relevant varibales in desired order.
+# Format 'franSkate' table and create modified version. Add 7 new
+# variables and arrange by gamesPlayed.
 franSkateMod <- franSkate %>% mutate(playerName = paste(franSkate$firstName, 
     franSkate$lastName)) %>% mutate(avgPointsPerSeason = round(points/seasons, 
     1)) %>% mutate(avgGoalsPerSeason = round(goals/seasons, 1)) %>% mutate(avgAssistsPerSeason = round(assists/seasons, 
     1)) %>% mutate(avgPenaltyMinutesPerSeason = round(penaltyMinutes/seasons, 
     1)) %>% mutate(avgGamesPlayedPerSeason = round(gamesPlayed/seasons, 
     1)) %>% mutate(seniority = seasons) %>% arrange(desc(gamesPlayed))
+# Additional format of 'franSkateMod'. Replace levels of categorical
+# variable 'positionCode' with full position name. Apply categorical
+# values to newly created seniority. Replace values of 'activePlayer'
+# for appearance. Select relevant varibales in desired order.
 franSkateMod$positionCode <- factor(franSkateMod$positionCode, c("C", "D", 
     "L", "R"), labels = c("Center", "Defenseman", "Left Wing", "Right Wing"))
-franSkateMod$seniority <- factor(ifelse(franSkateMod$seniority == 1, "1 year Rookie", 
-    ifelse(franSkateMod$seniority <= 5, "2-5 year Veteran", "6+ year Seasoned Veteran")))
+franSkateMod$seniority <- factor(ifelse(franSkateMod$seniority == 1, "1yr Franchise Rookie", 
+    ifelse(franSkateMod$seniority <= 5, "2-5yr Franchise Veteran", "6+yr Franchise Seasoned Veteran")))
 franSkateMod$activePlayer <- factor(ifelse(franSkateMod$activePlayer == 
     "TRUE", "Active", "NonActive"))
 franSkateMod <- franSkateMod %>% rename(position = "positionCode") %>% 
@@ -402,6 +435,14 @@ franSkateMod <- franSkateMod %>% rename(position = "positionCode") %>%
     position, seasons, seniority, gamesPlayed, points, goals, assists, 
     penaltyMinutes, avgPointsPerSeason, avgGoalsPerSeason, avgAssistsPerSeason, 
     avgPenaltyMinutesPerSeason, avgGamesPlayedPerSeason)
+```
+
+A preview of the two modified tables is provided for validation after
+formatting.
+
+``` r
+# Preview formatted tables
+knitr::kable(head(franMod, n = 10), format = "html", caption = "Preview of Modified Franchise Data")
 ```
 
 <table>
@@ -862,6 +903,10 @@ NA
 
 </table>
 
+``` r
+knitr::kable(head(franSkateMod, n = 10), format = "html", caption = "Preview of Modified Skater Data for Carolina Hurricanes")
+```
+
 <table>
 
 <caption>
@@ -1010,7 +1055,7 @@ Center
 
 <td style="text-align:left;">
 
-6+ year Seasoned Veteran
+6+yr Franchise Seasoned Veteran
 
 </td>
 
@@ -1110,7 +1155,7 @@ Defenseman
 
 <td style="text-align:left;">
 
-6+ year Seasoned Veteran
+6+yr Franchise Seasoned Veteran
 
 </td>
 
@@ -1210,7 +1255,7 @@ Center
 
 <td style="text-align:left;">
 
-6+ year Seasoned Veteran
+6+yr Franchise Seasoned Veteran
 
 </td>
 
@@ -1310,7 +1355,7 @@ Right Wing
 
 <td style="text-align:left;">
 
-6+ year Seasoned Veteran
+6+yr Franchise Seasoned Veteran
 
 </td>
 
@@ -1410,7 +1455,7 @@ Center
 
 <td style="text-align:left;">
 
-6+ year Seasoned Veteran
+6+yr Franchise Seasoned Veteran
 
 </td>
 
@@ -1510,7 +1555,7 @@ Center
 
 <td style="text-align:left;">
 
-6+ year Seasoned Veteran
+6+yr Franchise Seasoned Veteran
 
 </td>
 
@@ -1610,7 +1655,7 @@ Defenseman
 
 <td style="text-align:left;">
 
-6+ year Seasoned Veteran
+6+yr Franchise Seasoned Veteran
 
 </td>
 
@@ -1710,7 +1755,7 @@ Left Wing
 
 <td style="text-align:left;">
 
-6+ year Seasoned Veteran
+6+yr Franchise Seasoned Veteran
 
 </td>
 
@@ -1810,7 +1855,7 @@ Defenseman
 
 <td style="text-align:left;">
 
-6+ year Seasoned Veteran
+6+yr Franchise Seasoned Veteran
 
 </td>
 
@@ -1910,7 +1955,7 @@ Left Wing
 
 <td style="text-align:left;">
 
-6+ year Seasoned Veteran
+6+yr Franchise Seasoned Veteran
 
 </td>
 
@@ -1980,11 +2025,36 @@ Left Wing
 
 </table>
 
+### Numeric Summaries
+
+Contingecy tables are provided for the categorical variables `position`,
+`seniority`, and `activePlayer`. When comparing skater position vs
+franchise seniority, the most notable observations are:
+
+  - The balanced amount of offensive players per level of seniority
+    between the positions Center, Left Wing, and Right Wing  
+  - The relatively low number (48 out of 396) of Franchise Seasoned
+    Veteran players who stay with the franchise for at least 6 years
+
+When comparing active players by skater position, there are 49 players
+still active in the league. A NHL team can only have 23 active players
+at one time, so the `activePlayer` flag from the NHL API must indicate
+at a high level if the player still has an active career with any
+franchise. It would be worth exploring further to join this data set
+with the API `/player` endpoint to better understand which players
+currently play for the selected franchise and make up the 23 man roster.
+
+``` r
+# Contingency tables of frequency
+knitr::kable(table(franSkateMod$position, franSkateMod$seniority), format = "html", 
+    caption = "Frequency of Skater Position by Franchise Seniority")
+```
+
 <table>
 
 <caption>
 
-Frequency of Skater Position by Seniority
+Frequency of Skater Position by Franchise Seniority
 
 </caption>
 
@@ -1998,19 +2068,19 @@ Frequency of Skater Position by Seniority
 
 <th style="text-align:right;">
 
-1 year Rookie
+1yr Franchise Rookie
 
 </th>
 
 <th style="text-align:right;">
 
-2-5 year Veteran
+2-5yr Franchise Veteran
 
 </th>
 
 <th style="text-align:right;">
 
-6+ year Seasoned Veteran
+6+yr Franchise Seasoned Veteran
 
 </th>
 
@@ -2136,6 +2206,11 @@ Right Wing
 
 </table>
 
+``` r
+knitr::kable(table(franSkateMod$activePlayer, franSkateMod$position), format = "html", 
+    caption = "Frequency of Active Players by Skater Position")
+```
+
 <table>
 
 <caption>
@@ -2254,9 +2329,38 @@ NonActive
 
 </table>
 
-### Numeric Summaries
+Numeric summaries of key stats help reveal a few observations on seasons
+played for the franchise, goals scored, and assists given by player
+position. These summaries were conducted on **NonActive** players who
+have definitely concluded their contributions to the franchise. Some of
+these are intuitive based on the name of the player position, but still
+worth noting:
 
-Provide contingecy tables and numeric summaries as required.
+  - The overall mean time spent with the franchise is almost constant
+    across all 4 positions, around 3 years.  
+  - Defenseman, on average, score less goals than the 3 offensive
+    positions  
+  - Centers, on average, score more goals and provide more assists than
+    all other positions
+
+<!-- end list -->
+
+``` r
+# Function created that takes NonActive players by position
+# (user-provided argument 'x') and outputs a numeric summary of key
+# stats
+skateSum <- function(x = "") {
+    skateFun <- franSkateMod %>% filter(position == x, activePlayer == 
+        "NonActive")
+    knitr::kable(cbind(`Seasons Played` = round(summary(skateFun$seasons), 
+        1), `Games Played` = round(summary(skateFun$gamesPlayed), 1), `Goals Scored` = round(summary(skateFun$goals), 
+        1), `Assists Given` = round(summary(skateFun$assists), 1)), format = "html", 
+        caption = paste("Summary of NonActive Players for Skater Position:", 
+            x))
+}
+# Call custom function 4 times, once per skater position.
+skateSum("Defenseman")
+```
 
 <table>
 
@@ -2512,6 +2616,10 @@ Max.
 
 </table>
 
+``` r
+skateSum("Center")
+```
+
 <table>
 
 <caption>
@@ -2766,6 +2874,10 @@ Max.
 
 </table>
 
+``` r
+skateSum("Left Wing")
+```
+
 <table>
 
 <caption>
@@ -3019,6 +3131,10 @@ Max.
 </tbody>
 
 </table>
+
+``` r
+skateSum("Right Wing")
+```
 
 <table>
 
