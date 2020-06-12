@@ -442,7 +442,7 @@ formatting.
 
 ``` r
 # Preview formatted tables
-knitr::kable(head(franMod, n = 10), format = "html", caption = "Preview of Modified Franchise Data")
+knitr::kable(head(franMod, n = 7), format = "html", caption = "Preview of Modified Franchise Data")
 ```
 
 <table>
@@ -779,132 +779,12 @@ NA
 
 </tr>
 
-<tr>
-
-<td style="text-align:left;">
-
-Chicago Blackhawks
-
-</td>
-
-<td style="text-align:right;">
-
-11
-
-</td>
-
-<td style="text-align:right;">
-
-16
-
-</td>
-
-<td style="text-align:right;">
-
-19261927
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Cleveland Barons
-
-</td>
-
-<td style="text-align:right;">
-
-13
-
-</td>
-
-<td style="text-align:right;">
-
-49
-
-</td>
-
-<td style="text-align:right;">
-
-19671968
-
-</td>
-
-<td style="text-align:right;">
-
-19771978
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Colorado Avalanche
-
-</td>
-
-<td style="text-align:right;">
-
-27
-
-</td>
-
-<td style="text-align:right;">
-
-21
-
-</td>
-
-<td style="text-align:right;">
-
-19791980
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-</tr>
-
 </tbody>
 
 </table>
 
 ``` r
-knitr::kable(head(franSkateMod, n = 10), format = "html", caption = "Preview of Modified Skater Data for Carolina Hurricanes")
+knitr::kable(head(franSkateMod, n = 7), format = "html", caption = "Preview of Modified Skater Data for Carolina Hurricanes")
 ```
 
 <table>
@@ -1721,306 +1601,6 @@ Defenseman
 
 </tr>
 
-<tr>
-
-<td style="text-align:left;">
-
-Jeff Skinner
-
-</td>
-
-<td style="text-align:right;">
-
-8475784
-
-</td>
-
-<td style="text-align:left;">
-
-Active
-
-</td>
-
-<td style="text-align:left;">
-
-Left Wing
-
-</td>
-
-<td style="text-align:right;">
-
-8
-
-</td>
-
-<td style="text-align:left;">
-
-6+yr Franchise Seasoned Veteran
-
-</td>
-
-<td style="text-align:right;">
-
-579
-
-</td>
-
-<td style="text-align:right;">
-
-379
-
-</td>
-
-<td style="text-align:right;">
-
-204
-
-</td>
-
-<td style="text-align:right;">
-
-175
-
-</td>
-
-<td style="text-align:right;">
-
-268
-
-</td>
-
-<td style="text-align:right;">
-
-47.4
-
-</td>
-
-<td style="text-align:right;">
-
-25.5
-
-</td>
-
-<td style="text-align:right;">
-
-21.9
-
-</td>
-
-<td style="text-align:right;">
-
-33.5
-
-</td>
-
-<td style="text-align:right;">
-
-72.4
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Justin Faulk
-
-</td>
-
-<td style="text-align:right;">
-
-8475753
-
-</td>
-
-<td style="text-align:left;">
-
-Active
-
-</td>
-
-<td style="text-align:left;">
-
-Defenseman
-
-</td>
-
-<td style="text-align:right;">
-
-8
-
-</td>
-
-<td style="text-align:left;">
-
-6+yr Franchise Seasoned Veteran
-
-</td>
-
-<td style="text-align:right;">
-
-559
-
-</td>
-
-<td style="text-align:right;">
-
-258
-
-</td>
-
-<td style="text-align:right;">
-
-85
-
-</td>
-
-<td style="text-align:right;">
-
-173
-
-</td>
-
-<td style="text-align:right;">
-
-265
-
-</td>
-
-<td style="text-align:right;">
-
-32.2
-
-</td>
-
-<td style="text-align:right;">
-
-10.6
-
-</td>
-
-<td style="text-align:right;">
-
-21.6
-
-</td>
-
-<td style="text-align:right;">
-
-33.1
-
-</td>
-
-<td style="text-align:right;">
-
-69.9
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Erik Cole
-
-</td>
-
-<td style="text-align:right;">
-
-8467396
-
-</td>
-
-<td style="text-align:left;">
-
-NonActive
-
-</td>
-
-<td style="text-align:left;">
-
-Left Wing
-
-</td>
-
-<td style="text-align:right;">
-
-9
-
-</td>
-
-<td style="text-align:left;">
-
-6+yr Franchise Seasoned Veteran
-
-</td>
-
-<td style="text-align:right;">
-
-557
-
-</td>
-
-<td style="text-align:right;">
-
-363
-
-</td>
-
-<td style="text-align:right;">
-
-168
-
-</td>
-
-<td style="text-align:right;">
-
-195
-
-</td>
-
-<td style="text-align:right;">
-
-494
-
-</td>
-
-<td style="text-align:right;">
-
-40.3
-
-</td>
-
-<td style="text-align:right;">
-
-18.7
-
-</td>
-
-<td style="text-align:right;">
-
-21.7
-
-</td>
-
-<td style="text-align:right;">
-
-54.9
-
-</td>
-
-<td style="text-align:right;">
-
-61.9
-
-</td>
-
-</tr>
-
 </tbody>
 
 </table>
@@ -2332,9 +1912,9 @@ NonActive
 Numeric summaries of key stats help reveal a few observations on seasons
 played for the franchise, goals scored, and assists given by player
 position. These summaries were conducted on **NonActive** players who
-have definitely concluded their contributions to the franchise. Some of
-these are intuitive based on the name of the player position, but still
-worth noting:
+have definitively concluded their contributions to the franchise. Some
+of these are intuitive based on the name of the player position, but
+still worth noting:
 
   - The overall mean time spent with the franchise is almost constant
     across all 4 positions, around 3 years.  
@@ -3395,4 +2975,63 @@ Max.
 Create some plots (bar, box, scatter) with discussion of observations
 for each.
 
-![](README_files/figure-gfm/plots-1.png)<!-- -->![](README_files/figure-gfm/plots-2.png)<!-- -->![](README_files/figure-gfm/plots-3.png)<!-- -->![](README_files/figure-gfm/plots-4.png)<!-- -->![](README_files/figure-gfm/plots-5.png)<!-- -->![](README_files/figure-gfm/plots-6.png)<!-- -->![](README_files/figure-gfm/plots-7.png)<!-- -->![](README_files/figure-gfm/plots-8.png)<!-- -->![](README_files/figure-gfm/plots-9.png)<!-- -->![](README_files/figure-gfm/plots-10.png)<!-- -->![](README_files/figure-gfm/plots-11.png)<!-- -->![](README_files/figure-gfm/plots-12.png)<!-- -->
+``` r
+# Histogram creation
+histSkate <- ggplot(data = franSkateMod, aes(x = seasons))
+histSkate + geom_histogram(bins = 15) + labs(x = "Seasons Played", y = "Player Count", 
+    title = "Histogram of Seasons Played")
+```
+
+![](README_files/figure-gfm/plots-1.png)<!-- -->
+
+``` r
+# Cluster bar chart creation
+clustSkate <- ggplot(data = franSkateMod, aes(x = position))
+clustSkate + geom_bar(aes(fill = as.factor(seniority)), position = "dodge") + 
+    labs(x = "Player Position", y = "Player Count", title = "Count of Player by Seniority") + 
+    scale_fill_discrete(name = "")
+```
+
+![](README_files/figure-gfm/plots-2.png)<!-- -->
+
+``` r
+# Boxplot creation by position
+boxSkateGoal <- ggplot(data = franSkateMod)
+boxSkateGoal + geom_boxplot(aes(x = position, y = avgGoalsPerSeason)) + 
+    geom_jitter(aes(x = position, y = avgGoalsPerSeason, color = position)) + 
+    labs(x = "Player Position", y = "Average Goals Per Season", title = "Boxplot for Average Goals Per Season") + 
+    theme(legend.position = "none")
+```
+
+![](README_files/figure-gfm/plots-3.png)<!-- -->
+
+``` r
+boxSkatePenalty <- ggplot(data = franSkateMod)
+boxSkatePenalty + geom_boxplot(aes(x = position, y = avgPenaltyMinutesPerSeason)) + 
+    geom_jitter(aes(x = position, y = avgPenaltyMinutesPerSeason, color = position)) + 
+    labs(x = "Player Position", y = "Average Penalty Minutes Per Season", 
+        title = "Boxplot for Average Penalty Minutes Per Season") + theme(legend.position = "none")
+```
+
+![](README_files/figure-gfm/plots-4.png)<!-- -->
+
+``` r
+# Scatter plot creation
+scatterGoalAsst <- ggplot(data = franSkateMod, aes(x = avgGoalsPerSeason, 
+    y = avgAssistsPerSeason, color = position, group = position))
+scatterGoalAsst + geom_point() + geom_smooth(method = lm) + labs(x = "Average Goals Per Season", 
+    y = "Average Assists Per Season", title = "Average Goals Per Season vs Average Assists Per Season") + 
+    scale_colour_discrete("Player Position")
+```
+
+![](README_files/figure-gfm/plots-5.png)<!-- -->
+
+``` r
+scatterSeasonGoal <- ggplot(data = franSkateMod, aes(x = seasons, y = avgGoalsPerSeason, 
+    color = position, group = position))
+scatterSeasonGoal + geom_point() + geom_smooth(method = lm) + labs(x = "Seasons Played", 
+    y = "Average Goals Per Season", title = "Seasons Played vs Average Goals Per Season") + 
+    scale_colour_discrete("Player Position")
+```
+
+![](README_files/figure-gfm/plots-6.png)<!-- -->
