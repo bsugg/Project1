@@ -196,8 +196,8 @@ tibbles for each:
   - `/franchise-skater-records` to create table `franSkate`
       - Filtered on Franchise ID `26` for the Carolina Hurricanes
 
-These tables will be used in the upcoming section on “Exploratory Data
-Analysis”.
+Some of these tables will be used in the upcoming section on
+“Exploratory Data Analysis”.
 
 ``` r
 nhlTable <- function(tableName) {
@@ -426,8 +426,8 @@ franSkateMod <- franSkate %>% mutate(playerName = paste(franSkate$firstName,
 # for appearance. Select relevant varibales in desired order.
 franSkateMod$positionCode <- factor(franSkateMod$positionCode, c("C", "D", 
     "L", "R"), labels = c("Center", "Defenseman", "Left Wing", "Right Wing"))
-franSkateMod$seniority <- factor(ifelse(franSkateMod$seniority == 1, "1yr Franchise Rookie", 
-    ifelse(franSkateMod$seniority <= 5, "2-5yr Franchise Veteran", "6+yr Franchise Seasoned Veteran")))
+franSkateMod$seniority <- factor(ifelse(franSkateMod$seniority == 1, "1 Season", 
+    ifelse(franSkateMod$seniority <= 5, "2-5 Seasons", "6+ Seasons")))
 franSkateMod$activePlayer <- factor(ifelse(franSkateMod$activePlayer == 
     "TRUE", "Active", "NonActive"))
 franSkateMod <- franSkateMod %>% rename(position = "positionCode") %>% 
@@ -935,7 +935,7 @@ Center
 
 <td style="text-align:left;">
 
-6+yr Franchise Seasoned Veteran
+6+ Seasons
 
 </td>
 
@@ -1035,7 +1035,7 @@ Defenseman
 
 <td style="text-align:left;">
 
-6+yr Franchise Seasoned Veteran
+6+ Seasons
 
 </td>
 
@@ -1135,7 +1135,7 @@ Center
 
 <td style="text-align:left;">
 
-6+yr Franchise Seasoned Veteran
+6+ Seasons
 
 </td>
 
@@ -1235,7 +1235,7 @@ Right Wing
 
 <td style="text-align:left;">
 
-6+yr Franchise Seasoned Veteran
+6+ Seasons
 
 </td>
 
@@ -1335,7 +1335,7 @@ Center
 
 <td style="text-align:left;">
 
-6+yr Franchise Seasoned Veteran
+6+ Seasons
 
 </td>
 
@@ -1435,7 +1435,7 @@ Center
 
 <td style="text-align:left;">
 
-6+yr Franchise Seasoned Veteran
+6+ Seasons
 
 </td>
 
@@ -1535,7 +1535,7 @@ Defenseman
 
 <td style="text-align:left;">
 
-6+yr Franchise Seasoned Veteran
+6+ Seasons
 
 </td>
 
@@ -1613,8 +1613,8 @@ franchise seniority, the most notable observations are:
 
   - The balanced amount of offensive players per level of seniority
     between the positions Center, Left Wing, and Right Wing  
-  - The relatively low number (48 out of 396) of Franchise Seasoned
-    Veteran players who stay with the franchise for at least 6 years
+  - The relatively low number (48 out of 396) of players who stay with
+    the franchise for at least 6 seasons or more
 
 When comparing active players by skater position, there are 49 players
 still active in the league. A NHL team can only have 23 active players
@@ -1648,19 +1648,19 @@ Frequency of Skater Position by Franchise Seniority
 
 <th style="text-align:right;">
 
-1yr Franchise Rookie
+1 Season
 
 </th>
 
 <th style="text-align:right;">
 
-2-5yr Franchise Veteran
+2-5 Seasons
 
 </th>
 
 <th style="text-align:right;">
 
-6+yr Franchise Seasoned Veteran
+6+ Seasons
 
 </th>
 
@@ -1912,12 +1912,12 @@ NonActive
 Numeric summaries of key stats help reveal a few observations on seasons
 played for the franchise, goals scored, and assists given by player
 position. These summaries were conducted on **NonActive** players who
-have definitively concluded their contributions to the franchise. Some
-of these are intuitive based on the name of the player position, but
-still worth noting:
+have concluded their contributions to the franchise. Some of these are
+intuitive based on the name of the player position, but still worth
+noting:
 
   - The overall mean time spent with the franchise is almost constant
-    across all 4 positions, around 3 years.  
+    across all 4 positions, around 3 seasons  
   - Defenseman, on average, score less goals than the 3 offensive
     positions  
   - Centers, on average, score more goals and provide more assists than
@@ -2972,8 +2972,20 @@ Max.
 
 ### Visuals
 
-Create some plots (bar, box, scatter) with discussion of observations
-for each.
+A few plots help illustrate the above numeric summaries, and offer
+additional views into the players and their franchise stats.
+
+The histogram gives an overview of the number of players by seasons with
+the franchise. The sudden drop around 4 seasons shows the relatively
+short tenure most players have with the organization. There are still a
+few, however, who stick around for 5, 10, even 15+ years.
+
+The side-by-side bar chart shows the count of players by seniority,
+grouped by their position. It’s interesting to see the relatively high
+number of players who are with the franchise for only 1 season, compared
+to the few who are around much longer. The high turnover of players
+after only 1 season with the team could indicate the high performance
+required to stay with the franchise, or in the NHL altogether.
 
 ``` r
 # Histogram creation
@@ -2982,7 +2994,7 @@ histSkate + geom_histogram(bins = 15) + labs(x = "Seasons Played", y = "Player C
     title = "Histogram of Seasons Played")
 ```
 
-![](README_files/figure-gfm/plots-1.png)<!-- -->
+![](README_files/figure-gfm/plotsHistogramAndBar-1.png)<!-- -->
 
 ``` r
 # Cluster bar chart creation
@@ -2992,10 +3004,28 @@ clustSkate + geom_bar(aes(fill = as.factor(seniority)), position = "dodge") +
     scale_fill_discrete(name = "")
 ```
 
-![](README_files/figure-gfm/plots-2.png)<!-- -->
+![](README_files/figure-gfm/plotsHistogramAndBar-2.png)<!-- -->
+
+Switching to player stats on the ice, the first side-by-side boxplot
+gives a better visual of the overall lower average in scored goals per
+season for Defenseman, with a very small IQR when compared to the
+offensive positions. Naturally, it should be expected the 3 offensive
+positions would have higher averages of goals scored.
+
+The second boxplot focuses on the average minutes per season spent off
+the ice in the penalty box. Unlike goals scored, there is no natural
+distinction between defensive and offensive positions. Centers have a
+lower average of time in the penalty box. This leads to interesting
+questions for further investigation: What is the role of a Center? Are
+they usually captains and leaders who need to be on the ice guiding
+their teammates?
+
+Given the high scoring average of Centers, it would be beneficial for
+teams to have these players in the game and avoid the penalty box as
+much as possible.
 
 ``` r
-# Boxplot creation by position
+# Boxplot 1 creation by position
 boxSkateGoal <- ggplot(data = franSkateMod)
 boxSkateGoal + geom_boxplot(aes(x = position, y = avgGoalsPerSeason)) + 
     geom_jitter(aes(x = position, y = avgGoalsPerSeason, color = position)) + 
@@ -3003,9 +3033,10 @@ boxSkateGoal + geom_boxplot(aes(x = position, y = avgGoalsPerSeason)) +
     theme(legend.position = "none")
 ```
 
-![](README_files/figure-gfm/plots-3.png)<!-- -->
+![](README_files/figure-gfm/plotsBox-1.png)<!-- -->
 
 ``` r
+# Boxplot 2 creation by position
 boxSkatePenalty <- ggplot(data = franSkateMod)
 boxSkatePenalty + geom_boxplot(aes(x = position, y = avgPenaltyMinutesPerSeason)) + 
     geom_jitter(aes(x = position, y = avgPenaltyMinutesPerSeason, color = position)) + 
@@ -3013,20 +3044,44 @@ boxSkatePenalty + geom_boxplot(aes(x = position, y = avgPenaltyMinutesPerSeason)
         title = "Boxplot for Average Penalty Minutes Per Season") + theme(legend.position = "none")
 ```
 
-![](README_files/figure-gfm/plots-4.png)<!-- -->
+![](README_files/figure-gfm/plotsBox-2.png)<!-- -->
+
+The previous observation on Centers and their high scoring average
+compared to their lower average of penalty minutes gave inspiration for
+the first scatter plot below. Stepping away from averages, this scatter
+plot looks at total penalty minutes a player has with the franchise
+compared to their total number of goals scored. Observations are grouped
+by player position. The groupings are clear, and positions with higher
+penalty minutes see less goals scored. It would be interesting to
+investigate this further, and see if a player’s position (Center,
+Left/Right Wing, or Defenseman) can be predicted if only penalty minutes
+and goals scored are known.
+
+The final visual explores the relationship between seasons played and
+average goals scored per season. The first observation has been noted
+already in other plots: Defenseman are going to have a low scoring
+average, no matter how many seasons they spend with their franchise.
+
+The offensive positions share a common element: there is a positive
+relationship between the length of time with the franchise compared to
+the number of goals scored. This could be due to ranchised players being
+trusted more with taking shots, or high goal scoring could be the
+deciding factor for a franchise to keep an offensive player on the
+roster for a longer period of time.
 
 ``` r
-# Scatter plot creation
-scatterGoalAsst <- ggplot(data = franSkateMod, aes(x = avgGoalsPerSeason, 
-    y = avgAssistsPerSeason, color = position, group = position))
-scatterGoalAsst + geom_point() + geom_smooth(method = lm) + labs(x = "Average Goals Per Season", 
-    y = "Average Assists Per Season", title = "Average Goals Per Season vs Average Assists Per Season") + 
+# Scatter plot 1 creation
+scatterPenaltyGoal <- ggplot(data = franSkateMod, aes(x = penaltyMinutes, 
+    y = goals, color = position, group = position))
+scatterPenaltyGoal + geom_point() + geom_smooth(method = lm) + labs(x = "Penalty Minutes with Franchise", 
+    y = "Goals Scored with Franchise", title = "Total Penalty Minutes vs Total Goals Scored") + 
     scale_colour_discrete("Player Position")
 ```
 
-![](README_files/figure-gfm/plots-5.png)<!-- -->
+![](README_files/figure-gfm/plotsScatter-1.png)<!-- -->
 
 ``` r
+# Scatter plot 2 creation
 scatterSeasonGoal <- ggplot(data = franSkateMod, aes(x = seasons, y = avgGoalsPerSeason, 
     color = position, group = position))
 scatterSeasonGoal + geom_point() + geom_smooth(method = lm) + labs(x = "Seasons Played", 
@@ -3034,4 +3089,4 @@ scatterSeasonGoal + geom_point() + geom_smooth(method = lm) + labs(x = "Seasons 
     scale_colour_discrete("Player Position")
 ```
 
-![](README_files/figure-gfm/plots-6.png)<!-- -->
+![](README_files/figure-gfm/plotsScatter-2.png)<!-- -->
