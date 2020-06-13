@@ -266,7 +266,7 @@ The previous observation on Centers and their high scoring average compared to t
 
 The final visual explores the relationship between seasons played and average goals scored per season. The first observation has been noted already in other plots: Defenseman are going to have a low scoring average, no matter how many seasons they spend with their franchise.  
 
-The offensive positions share a common element: there is a positive relationship between the length of time with the franchise compared to the number of goals scored. This could be due to ranchised players being trusted more with taking shots, or high goal scoring could be the deciding factor for a franchise to keep an offensive player on the roster for a longer period of time.  
+The offensive positions share a common element: there is a positive relationship between the length of time with the franchise compared to the number of goals scored. This could be due to franchised players being trusted more with taking shots, or high goal scoring could be the deciding factor for a franchise to keep an offensive player on the roster for a longer period of time.  
 
 ```{r plotsScatter}
 # Scatter plot 1 creation

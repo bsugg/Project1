@@ -3064,8 +3064,8 @@ average, no matter how many seasons they spend with their franchise.
 
 The offensive positions share a common element: there is a positive
 relationship between the length of time with the franchise compared to
-the number of goals scored. This could be due to ranchised players being
-trusted more with taking shots, or high goal scoring could be the
+the number of goals scored. This could be due to franchised players
+being trusted more with taking shots, or high goal scoring could be the
 deciding factor for a franchise to keep an offensive player on the
 roster for a longer period of time.
 
